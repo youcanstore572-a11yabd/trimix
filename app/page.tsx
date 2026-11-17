@@ -110,7 +110,7 @@ export default function Home() {
             sizes="100vw"
             quality={85}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/70 to-white/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/90 to-white/95" />
         </div>
 
         <FadeIn className="relative z-10 max-w-5xl mx-auto flex flex-col items-center justify-center my-auto w-full">

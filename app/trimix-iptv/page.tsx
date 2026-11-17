@@ -465,7 +465,7 @@ export default function HowToUsePage() {
                 );
               })}
             </div>
-          </FadeInStagger>
+          </FadeIn>
 
           <FadeIn className="text-center mt-14">
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
