@@ -1,5 +1,5 @@
 // app/blog/[slug]/page.tsx
-import { blogPosts } from '@/lib/blog';
+import { blogPosts, BlogPost } from '@/lib/blog';
 import { CONSTANTS } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -18,6 +18,9 @@ import {
   Award,
   Globe,
   ArrowUpRight,
+  Tv,
+  Settings,
+  Star,
 } from 'lucide-react';
 import ShareButtons from '../../components/ShareButtons';
 import ArticleScrollSidebar from '../../components/ArticleScrollSidebar';
@@ -79,7 +82,7 @@ function formatDate(dateStr: string): string {
 function sanitizeContent(html: string): string {
   return html
     .replace(/<h1(\s[^>]*)?>/gi, '<h2$1>')
-    .replace(/<\/h1>/gi, '<\/h2>')
+    .replace(/<\/h1>/gi, '</h2>')
     .replace(/<h2([^>]*)>(.*?faq.*?)<\/h2>/gi, '<h2 id="faq-section"$1>$2</h2>');
 }
 
@@ -115,7 +118,7 @@ function extractFAQs(html: string): { q: string; a: string }[] {
   return faqs.slice(0, 10);
 }
 
-function getRelatedPosts(currentPost: any, allPosts: any[], limit = 3): any[] {
+function getRelatedPosts(currentPost: any, allPosts: any[], limit = 4): any[] {
   const scored = allPosts
     .filter((p) => p.slug !== currentPost.slug)
     .map((p) => {
@@ -147,8 +150,6 @@ function extractHeadings(html: string): string[] {
   }
   return headings.slice(0, 8);
 }
-
-import { BlogPost } from '@/lib/blog';
 
 function extractQuickFacts(post: Partial<BlogPost>): { label: string; value: string }[] {
   const content = (post.content || '').toLowerCase();
@@ -204,9 +205,7 @@ export async function generateMetadata({ params }: Props) {
     };
   }
 
-  const shortTitle = clampTitle(
-    post.metatitle || post.title
-  );
+  const shortTitle = clampTitle(post.metatitle || post.title);
 
   const description = clampDescription(
     post.metadescription ||
@@ -283,14 +282,14 @@ export default async function BlogPostPage({ params }: Props) {
   const canonicalUrl = `${SITE_URL}/blog/${post.slug}`;
 
   const imageSrc = post.image || '/img/blog/default.webp';
-  
+
   const schemaImageUrl = imageSrc.startsWith('http')
     ? imageSrc
     : `${SITE_URL}${imageSrc.startsWith('/') ? imageSrc : `/${imageSrc}`}`;
 
   const safeContent = sanitizeContent(post.content);
   const faqs = extractFAQs(post.content);
-  const relatedPosts = getRelatedPosts(post, blogPosts, 3);
+  const relatedPosts = getRelatedPosts(post, blogPosts, 4);
   const articleHeadings = extractHeadings(safeContent);
   const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
   const quickFacts = extractQuickFacts(post);
@@ -427,7 +426,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <article className="flex flex-col min-h-screen bg-[#d9d9d9] text-[#102a4c] relative">
-
       {/* READING PROGRESS BAR */}
       <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-[#6934B8]/20 backdrop-blur-sm">
         <div className="h-full w-1/3 bg-gradient-to-r from-[#6934B8] via-[#341766] to-[#6934B8] shadow-[0_0_12px_rgba(28,101,206,0.5)]" />
@@ -444,7 +442,6 @@ export default async function BlogPostPage({ params }: Props) {
           HERO — ARTICLE BG COVER IMAGE
       ========================================================== */}
       <section className="relative min-h-[50vh] md:min-h-[60vh] flex items-center justify-center overflow-hidden bg-slate-900 border-b border-slate-300">
-
         <div className="absolute inset-0 z-0">
           <Image
             src={imageSrc}
@@ -468,7 +465,6 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* HERO CONTENT */}
         <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10 pt-28 pb-16 flex flex-col items-center text-center">
-
           <div className="inline-flex items-center gap-2 bg-[#6934B8] px-5 py-2 rounded-full mb-6 shadow-md border border-blue-400/30">
             <BookOpen className="w-4 h-4 text-white" />
             <span className="text-white text-[11px] font-black uppercase tracking-widest">
@@ -491,7 +487,10 @@ export default async function BlogPostPage({ params }: Props) {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-4">
-            <div className="inline-flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-slate-700/80 pl-1.5 pr-4 py-1.5 rounded-full shadow-md">
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-3 bg-slate-900/80 backdrop-blur-md border border-slate-700/80 hover:border-[#FFD532] pl-1.5 pr-4 py-1.5 rounded-full shadow-md transition-colors"
+            >
               <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[#6934B8]">
                 <Image
                   src="/img/profile.webp"
@@ -509,7 +508,7 @@ export default async function BlogPostPage({ params }: Props) {
                   {post.author}
                 </div>
               </div>
-            </div>
+            </Link>
 
             <div className="inline-flex items-center gap-2 bg-slate-900/80 backdrop-blur-md border border-slate-700/80 px-4 py-2 rounded-full text-slate-200 text-[11px] font-black uppercase tracking-widest shadow-md">
               <Calendar className="w-3.5 h-3.5 text-[#FFD532]" />
@@ -521,7 +520,6 @@ export default async function BlogPostPage({ params }: Props) {
               <span>{readTime} min read</span>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -556,10 +554,8 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* MAIN GRID */}
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-
         {/* CONTENT COLUMN */}
         <div className="lg:col-span-8 order-1 space-y-8">
-
           {/* ARTICLE BODY CARD */}
           <div className="relative bg-[#EDEADE] text-[#341766] rounded-3xl border-2 border-[#6934B8]/40 shadow-[0_25px_60px_rgba(4,32,139,0.15)] overflow-hidden">
             <div className="h-1.5 bg-gradient-to-r from-[#6934B8] via-[#FFD532] to-[#6934B8]" />
@@ -589,7 +585,6 @@ export default async function BlogPostPage({ params }: Props) {
                 "
                 dangerouslySetInnerHTML={{ __html: safeContent }}
               />
-
             </div>
           </div>
 
@@ -643,7 +638,9 @@ export default async function BlogPostPage({ params }: Props) {
                     <User className="w-3 h-3 text-[#FFD532]" /> Author
                   </div>
                   <h2 className="text-[#341766] font-black text-xl sm:text-2xl md:text-3xl mb-1 uppercase tracking-tight">
-                    {post.author}
+                    <Link href="/about" className="hover:text-[#6934B8] transition-colors">
+                      {post.author}
+                    </Link>
                   </h2>
                   <p className="text-[#6934B8] text-xs md:text-sm uppercase tracking-widest font-black mb-3">
                     {FOCUS_KEYWORD} Specialist
@@ -655,6 +652,77 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
           </div>
+
+          {/* IN-BODY RELATED GUIDES & HELPFUL LINKS (Boosts internal crawl paths) */}
+          {relatedPosts.length > 0 && (
+            <section className="rounded-3xl border-2 border-[#6934B8]/40 bg-[#EDEADE] p-6 sm:p-8 shadow-xl">
+              <div className="flex items-center justify-between gap-4 mb-6">
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#6934B8]">
+                    Keep Reading
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-black text-[#341766] uppercase tracking-tight">
+                    Related {BRAND} Guides
+                  </h2>
+                </div>
+                <Link
+                  href="/blog"
+                  className="text-xs font-black uppercase tracking-widest text-[#6934B8] hover:text-[#341766] underline underline-offset-4"
+                >
+                  All Guides →
+                </Link>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                {relatedPosts.map((rel) => (
+                  <Link
+                    key={rel.slug}
+                    href={`/blog/${rel.slug}`}
+                    className="group flex flex-col justify-between rounded-2xl border border-[#6934B8]/25 bg-white/80 p-4 hover:border-[#6934B8] hover:shadow-md transition-all"
+                  >
+                    <div>
+                      <span className="inline-block text-[10px] font-black uppercase tracking-widest text-[#6934B8] mb-1.5">
+                        {getCategoryLabel(rel)}
+                      </span>
+                      <h3 className="text-sm sm:text-base font-black text-[#341766] group-hover:text-[#6934B8] transition-colors leading-snug mb-2">
+                        {rel.title}
+                      </h3>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-[#6934B8]">
+                      Read Guide <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-[#6934B8]/20 flex flex-wrap gap-3 text-xs font-black uppercase tracking-wider">
+                <Link
+                  href="/setup"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#341766] text-[#EDEADE] hover:bg-[#6934B8] transition-colors"
+                >
+                  <Settings className="w-3.5 h-3.5 text-[#FFD532]" /> Device Setup Guide
+                </Link>
+                <Link
+                  href="/channels"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#341766] text-[#EDEADE] hover:bg-[#6934B8] transition-colors"
+                >
+                  <Tv className="w-3.5 h-3.5 text-[#FFD532]" /> Full Channel List
+                </Link>
+                <Link
+                  href="/reviews"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#341766] text-[#EDEADE] hover:bg-[#6934B8] transition-colors"
+                >
+                  <Star className="w-3.5 h-3.5 text-[#FFD532]" /> Customer Reviews
+                </Link>
+                <Link
+                  href="/faq"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#341766] text-[#EDEADE] hover:bg-[#6934B8] transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-[#FFD532]" /> IPTV FAQ
+                </Link>
+              </div>
+            </section>
+          )}
 
           {/* INLINE CTA CARD */}
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#6934B8] via-[#341766] to-[#6934B8] border-2 border-[#FFD532]/40 p-6 sm:p-8 md:p-10 shadow-2xl">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { CONSTANTS } from '@/lib/seo';
 import Image from 'next/image';
@@ -48,12 +48,14 @@ const devices = [
   { id: 'smarttv', name: 'Smart TVs', icon: Tv, popular: false, steps: 6 },
   { id: 'apple', name: 'Apple Devices', icon: Apple, popular: false, steps: 6 },
   { id: 'pc', name: 'PC / Mac', icon: Laptop, popular: false, steps: 6 },
-];
+] as const;
+
+type DeviceId = (typeof devices)[number]['id'];
 
 // ---------------------------------------------------------------------------
 // STEP DATA
 // ---------------------------------------------------------------------------
-const stepData = {
+const stepData: Record<DeviceId, any> = {
   firestick: {
     title: `Setup ${FOCUS_KEYWORD} on Firestick & Android TV`,
     icon: MonitorSmartphone,
@@ -62,7 +64,7 @@ const stepData = {
         number: 1,
         title: `Choose Your ${FOCUS_KEYWORD} Plan`,
         description: `Pick the ${SECONDARY_KEYWORD} that fits your household. Choose 3, 6, or 12 months with 1, 2, or 3 simultaneous screens. Every plan includes the full 36,000+ channel lineup, 120,000+ movies and TV shows, and 4K/60FPS streams on supported channels.`,
-        chips: ['20,000+ Channels', '120,000+ Movies', '4K & 60FPS', 'USD Pricing'],
+        chips: ['36,000+ Channels', '120,000+ Movies', '4K & 60FPS', 'USD Pricing'],
         duration: '1 min',
         icon: ShoppingCart,
         cta: { label: `View ${FOCUS_KEYWORD} Plans`, href: '/pricing', type: 'internal' },
@@ -76,22 +78,22 @@ const stepData = {
         duration: '2-3 min',
         icon: MessageCircle,
         cta: { label: 'Chat on WhatsApp', type: 'whatsapp', message: 'Hi! I want to subscribe and get setup help on my Firestick.' },
-        tip: 'Have your device ready before you message us. Support will send the download link for IPTV Smarter Pro the moment payment is confirmed.',
+        tip: 'Have your device ready before you message us. Support will send the download link for IPTV Smarters Pro the moment payment is confirmed.',
       },
       {
         number: 3,
-        title: 'Download IPTV Smarter Pro',
-        description: 'IPTV Smarter Pro is the fastest and most stable IPTV player for Firestick and Android TV. It supports 4K HDR, electronic program guide (EPG), parental controls, and comes with a built-in trial so you can test playback before you enter your credentials.',
-        chips: ['4K HDR', 'Low RAM', 'Fast Zapping', 'Built In Trial'],
+        title: 'Download IPTV Smarters Pro',
+        description: 'IPTV Smarters Pro is the fastest and most stable IPTV player for Firestick and Android TV. It supports 4K HDR, electronic program guide (EPG), parental controls, and smooth channel switching.',
+        chips: ['4K HDR', 'Low RAM', 'Fast Zapping', 'EPG Ready'],
         duration: '2 min',
         icon: Download,
-        cta: { label: 'Download IPTV Smarter Pro', type: 'external', href: IBO_DOWNLOAD_URL },
-        tip: 'On Firestick, enable Apps from Unknown Sources in Settings → My Fire TV → Developer Options, then use the Downloader app to sideload IPTV Smarter Pro if it is not in the Amazon App Store.',
+        cta: { label: 'Download Player App', type: 'external', href: IBO_DOWNLOAD_URL },
+        tip: 'On Firestick, enable Apps from Unknown Sources in Settings → My Fire TV → Developer Options, then use the Downloader app to install.',
       },
       {
         number: 4,
         title: 'Choose Your Setup Method',
-        description: `Two ways to connect your ${FOCUS_KEYWORD} subscription to IPTV Smarter Pro. Pick whichever feels easier — both deliver identical 4K streaming performance.`,
+        description: `Two ways to connect your ${FOCUS_KEYWORD} subscription to IPTV Smarters Pro. Pick whichever feels easier — both deliver identical 4K streaming performance.`,
         methods: [
           { title: 'Auto Setup by Support', subtitle: 'Recommended', points: ['Send us your Device Key', 'We activate remotely in under 60 seconds', 'Channel list loads automatically'], highlighted: true },
           { title: 'Manual Setup', subtitle: 'DIY', points: ['Support sends M3U URL or Xtream Codes', 'You paste credentials in the app', 'Channels load in seconds'], highlighted: false },
@@ -103,7 +105,7 @@ const stepData = {
       {
         number: 5,
         title: 'Load Content & Wait 1 to 2 Minutes',
-        description: 'Once activated, IPTV Smarter Pro downloads your full catalog in the background. Channels, movies, TV shows, the 7-day EPG guide, and your favorites list all populate automatically. Keep the app open during this first load — it only happens once.',
+        description: 'Once activated, IPTV Smarters Pro downloads your full catalog in the background. Channels, movies, TV shows, the 7-day EPG guide, and your favorites list all populate automatically. Keep the app open during this first load — it only happens once.',
         chips: ['1 to 2 min', 'EPG Auto Load', 'Favorites Ready'],
         duration: '1-2 min',
         icon: Plug,
@@ -114,7 +116,7 @@ const stepData = {
         title: `Start Streaming ${FOCUS_KEYWORD}!`,
         description: 'You are live. Enjoy instant access to 36,000+ live channels covering sports, news, movies, kids content, and international networks.',
         stats: [
-          { value: '20,000+', label: 'Live Channels' },
+          { value: '36,000+', label: 'Live Channels' },
           { value: '120,000+', label: 'Movies & TV Shows' },
           { value: '4K/60FPS', label: 'Quality' },
           { value: '24/7', label: 'Support' },
@@ -133,7 +135,7 @@ const stepData = {
         number: 1,
         title: `Choose Your ${FOCUS_KEYWORD} Plan`,
         description: 'Select 3, 6, or 12 month access with 1, 2, or 3 simultaneous screens. Perfect for family households streaming different content in different rooms.',
-        chips: ['20,000+ Channels', '120,000+ Movies', 'Samsung & LG', 'USD Pricing'],
+        chips: ['36,000+ Channels', '120,000+ Movies', 'Samsung & LG', 'USD Pricing'],
         duration: '1 min',
         icon: ShoppingCart,
         cta: { label: `View ${FOCUS_KEYWORD} Plans`, href: '/pricing', type: 'internal' },
@@ -147,17 +149,17 @@ const stepData = {
         duration: '2-3 min',
         icon: MessageCircle,
         cta: { label: 'Chat on WhatsApp', type: 'whatsapp', message: `Hi! I want to setup ${FOCUS_KEYWORD} on my Smart TV.` },
-        tip: 'App store availability depends on your TV model and year. Most modern Samsung and LG models have IPTV Smarter Pro available directly. Older models may need a Firestick.',
+        tip: 'App store availability depends on your TV model and year. Most modern Samsung and LG models have IPTV Smarters Pro available directly.',
       },
       {
         number: 3,
-        title: 'Install IPTV Smarter Pro',
-        description: 'IPTV Smarter Pro runs natively on Samsung Tizen (2017+), LG webOS (2018+), Android TV, and Google TV. No extra hardware required. It supports 4K HDR, EPG, and instant channel zapping right from your TV remote.',
+        title: 'Install IPTV Smarters Pro',
+        description: 'IPTV Smarters Pro runs natively on Samsung Tizen (2017+), LG webOS (2018+), Android TV, and Google TV. No extra hardware required. It supports 4K HDR, EPG, and instant channel zapping right from your TV remote.',
         chips: ['Samsung Tizen', 'LG webOS', 'Android TV', '4K HDR'],
         duration: '2 min',
         icon: Download,
-        cta: { label: 'Download IPTV Smarter Pro', type: 'external', href: IBO_DOWNLOAD_URL },
-        tip: 'Search "IPTV Smarter Pro" in your TV app store. If it is not available, message support — we will send an alternative install link for your model.',
+        cta: { label: 'Download Player App', type: 'external', href: IBO_DOWNLOAD_URL },
+        tip: 'Search "IPTV Smarters Pro" in your TV app store. If it is not available, message support — we will send an alternative install link for your model.',
       },
       {
         number: 4,
@@ -169,12 +171,12 @@ const stepData = {
         ],
         duration: '2 min',
         icon: KeyRound,
-        tip: 'Auto setup works on every Smart TV brand that supports IPTV Smarter Pro. Just send us your Device Key and we do the rest.',
+        tip: 'Auto setup works on every Smart TV brand that supports IPTV Smarters Pro. Just send us your Device Key and we do the rest.',
       },
       {
         number: 5,
         title: 'Load Content & Wait 1 to 2 Minutes',
-        description: 'IPTV Smarter Pro downloads your live channels, movies and TV shows library, and the full 7-day EPG guide automatically. Everything syncs in the background while you watch.',
+        description: 'IPTV Smarters Pro downloads your live channels, movies and TV shows library, and the full 7-day EPG guide automatically. Everything syncs in the background while you watch.',
         chips: ['1 to 2 min', 'EPG Auto Load', 'Parental Controls'],
         duration: '1-2 min',
         icon: Plug,
@@ -185,7 +187,7 @@ const stepData = {
         title: `Stream ${FOCUS_KEYWORD} in 4K`,
         description: 'Your Smart TV is ready. Enjoy buffer-free 4K IPTV with every major sports league, premium networks, and thousands of international channels.',
         stats: [
-          { value: '20,000+', label: 'Live Channels' },
+          { value: '36,000+', label: 'Live Channels' },
           { value: '120,000+', label: 'Movies & TV Shows' },
           { value: '4K', label: 'Ultra HD' },
           { value: '24/7', label: 'Support' },
@@ -204,7 +206,7 @@ const stepData = {
         number: 1,
         title: `Choose Your ${FOCUS_KEYWORD} Plan`,
         description: 'Pick the plan that fits your Apple household. Choose 3, 6, or 12 months with 1, 2, or 3 simultaneous screens. Works across iPhone, iPad, Apple TV 4K, and Mac.',
-        chips: ['20,000+ Channels', '120,000+ Movies', 'iPhone / iPad', 'Apple TV 4K'],
+        chips: ['36,000+ Channels', '120,000+ Movies', 'iPhone / iPad', 'Apple TV 4K'],
         duration: '1 min',
         icon: ShoppingCart,
         cta: { label: `View ${FOCUS_KEYWORD} Plans`, href: '/pricing', type: 'internal' },
@@ -222,12 +224,12 @@ const stepData = {
       },
       {
         number: 3,
-        title: 'Install IPTV Smarter Pro',
-        description: 'IPTV Smarter Pro works natively on iPhone, iPad, and Apple TV 4K with AirPlay 2, Picture in Picture, and iCloud sync for favorites and EPG data. Available on the App Store for iOS and tvOS.',
+        title: 'Install IPTV Smarters Pro',
+        description: 'IPTV Smarters Pro works natively on iPhone, iPad, and Apple TV 4K with AirPlay 2, Picture in Picture, and iCloud sync for favorites and EPG data. Available on the App Store for iOS and tvOS.',
         chips: ['iOS + tvOS', 'AirPlay 2', 'Picture in Picture', 'iCloud Sync'],
         duration: '2 min',
         icon: Download,
-        cta: { label: 'Download IPTV Smarter Pro', type: 'external', href: IBO_DOWNLOAD_URL },
+        cta: { label: 'Download Player App', type: 'external', href: IBO_DOWNLOAD_URL },
         tip: 'On Apple TV, use the Apple TV Remote app on your iPhone to type your credentials much faster than with the Siri Remote.',
       },
       {
@@ -245,7 +247,7 @@ const stepData = {
       {
         number: 5,
         title: 'Load Content & Wait 1 to 2 Minutes',
-        description: 'Your channels, movies and TV shows library, and full 7-day EPG guide load automatically in IPTV Smarter Pro. Favorites sync across iPhone, iPad, and Apple TV via iCloud.',
+        description: 'Your channels, movies and TV shows library, and full 7-day EPG guide load automatically in IPTV Smarters Pro. Favorites sync across iPhone, iPad, and Apple TV via iCloud.',
         chips: ['1 to 2 min', 'EPG Auto Load', 'iCloud Favorites'],
         duration: '1-2 min',
         icon: Plug,
@@ -256,7 +258,7 @@ const stepData = {
         title: `Stream ${FOCUS_KEYWORD} in 4K`,
         description: 'Your Apple device is ready. Enjoy premium 4K IPTV with AirPlay casting, Picture in Picture support, and the full sports and entertainment lineup.',
         stats: [
-          { value: '20,000+', label: 'Live Channels' },
+          { value: '36,000+', label: 'Live Channels' },
           { value: '120,000+', label: 'Movies & TV Shows' },
           { value: '4K HDR', label: 'Quality' },
           { value: '24/7', label: 'Support' },
@@ -275,7 +277,7 @@ const stepData = {
         number: 1,
         title: `Choose Your ${FOCUS_KEYWORD} Plan`,
         description: 'Pick 3, 6, or 12 month access. Multi-screen plans work great for dual-monitor setups or home office background streaming.',
-        chips: ['20,000+ Channels', '120,000+ Movies', 'Windows & Mac', 'USD Pricing'],
+        chips: ['36,000+ Channels', '120,000+ Movies', 'Windows & Mac', 'USD Pricing'],
         duration: '1 min',
         icon: ShoppingCart,
         cta: { label: `View ${FOCUS_KEYWORD} Plans`, href: '/pricing', type: 'internal' },
@@ -293,18 +295,18 @@ const stepData = {
       },
       {
         number: 3,
-        title: 'Download IPTV Smarter Pro',
-        description: 'IPTV Smarter Pro runs on Windows 10/11 and macOS (Intel + Apple Silicon) with keyboard shortcuts, multi-window support, and full 4K hardware-accelerated playback.',
+        title: 'Download IPTV Smarters Pro',
+        description: 'IPTV Smarters Pro runs on Windows 10/11 and macOS (Intel + Apple Silicon) with keyboard shortcuts, multi-window support, and full 4K hardware-accelerated playback.',
         chips: ['Windows 10/11', 'macOS', 'Multi window', '4K Ready'],
         duration: '2 min',
         icon: Download,
-        cta: { label: 'Download IPTV Smarter Pro', type: 'external', href: IBO_DOWNLOAD_URL },
+        cta: { label: 'Download Player App', type: 'external', href: IBO_DOWNLOAD_URL },
         tip: 'VLC Media Player also works if you prefer a lightweight option. Just paste the M3U URL into VLC → Open Network Stream.',
       },
       {
         number: 4,
         title: 'Choose Your Setup Method',
-        description: 'Auto setup by our support team, or manual entry of your M3U URL or Xtream Codes credentials directly in IPTV Smarter Pro.',
+        description: 'Auto setup by our support team, or manual entry of your M3U URL or Xtream Codes credentials directly in IPTV Smarters Pro.',
         methods: [
           { title: 'Auto Setup by Support', subtitle: 'Recommended', points: ['Send your Device Key', 'We activate remotely', 'App connects instantly'], highlighted: true },
           { title: 'Manual Setup', subtitle: 'DIY', points: ['We send M3U URL', 'Or Xtream Codes', 'Paste and play'], highlighted: false },
@@ -327,22 +329,19 @@ const stepData = {
         title: `Stream ${FOCUS_KEYWORD} in 4K`,
         description: 'Your PC or Mac is ready. Stream live sports, movies, and international networks in 4K Ultra HD with hardware-accelerated playback.',
         stats: [
-          { value: '20,000+', label: 'Live Channels' },
+          { value: '36,000+', label: 'Live Channels' },
           { value: '120,000+', label: 'Movies & TV Shows' },
           { value: '4K', label: 'Quality' },
           { value: '24/7', label: 'Support' },
         ],
         duration: 'Done!',
         icon: PlayCircle,
-        tip: 'Enable hardware acceleration in IPTV Smarter Pro settings for smoother 4K playback and lower CPU usage.',
+        tip: 'Enable hardware acceleration in IPTV Smarters Pro settings for smoother 4K playback and lower CPU usage.',
       },
     ],
   },
 };
 
-// ---------------------------------------------------------------------------
-// FAQ — Short 8 items
-// ---------------------------------------------------------------------------
 const setupFaqs = [
   {
     q: 'How do I receive my login details after purchasing a plan?',
@@ -350,22 +349,22 @@ const setupFaqs = [
   },
   {
     q: `Which IPTV player do you recommend for setup ${FOCUS_KEYWORD}?`,
-    a: 'We recommend IPTV Smarter Pro for the fastest channel zapping, lowest RAM usage, and best 4K performance across Firestick, Smart TVs, Apple devices, and PC or Mac. It is our top pick for smooth playback.',
+    a: 'We recommend IPTV Smarters Pro for the fastest channel zapping, lowest RAM usage, and best 4K performance across Firestick, Smart TVs, Apple devices, and PC or Mac. It is our top pick for smooth playback.',
   },
   {
-    q: 'Do I need to activate IPTV Smarter Pro separately?',
+    q: 'Do I need to activate IPTV Smarters Pro separately?',
     a: 'The activation service is included free with every subscription. Choose Auto Setup (send us your Device Key and we activate remotely) or Manual Setup (enter your M3U or Xtream Codes yourself).',
   },
   {
     q: `How long does setup ${FOCUS_KEYWORD} take?`,
-    a: 'Most customers are streaming within 10 minutes. Installing IPTV Smarter Pro takes about 2 minutes, activation takes 1 to 2 minutes, and content loading takes 1 to 2 minutes.',
+    a: 'Most customers are streaming within 10 minutes. Installing IPTV Smarters Pro takes about 2 minutes, activation takes 1 to 2 minutes, and content loading takes 1 to 2 minutes.',
   },
   {
     q: 'Can I use my login credentials on multiple devices?',
     a: 'Yes. You can install the app on unlimited devices. The number of simultaneous streams depends on your plan, with 1 screen on the Starter, and 2 or 3 screens on the Multi-Room plans.',
   },
   {
-    q: 'What should I do if I get a login error in IPTV Smarter Pro?',
+    q: 'What should I do if I get a login error in IPTV Smarters Pro?',
     a: 'Confirm you selected the Xtream Codes API method (not M3U) and that there are no extra spaces in your username or password. If it persists, message us on WhatsApp and most issues resolve within 2 minutes.',
   },
   {
@@ -378,21 +377,18 @@ const setupFaqs = [
   },
 ];
 
-// ---------------------------------------------------------------------------
-// LONG-FORM Q&A
-// ---------------------------------------------------------------------------
 const longFormFaqs = [
   {
     q: `What devices work best for setup ${FOCUS_KEYWORD}?`,
-    a: `For the best ${FOCUS_KEYWORD} experience, we recommend Amazon Firestick 4K Max for streaming sticks, Samsung Tizen or LG webOS Smart TVs for built-in apps, Apple TV 4K for the AirPlay ecosystem, and any Windows 11 or macOS Sonoma desktop for full 4K playback. All of these devices support IPTV Smarter Pro, our recommended IPTV player, and handle 4K and 60FPS content without frame drops. Older devices like Firestick Lite or second-generation Apple TV still work but cap out at Full HD. For the smoothest 4K performance, choose hardware from the last two generations.`,
+    a: `For the best ${FOCUS_KEYWORD} experience, we recommend Amazon Firestick 4K Max for streaming sticks, Samsung Tizen or LG webOS Smart TVs for built-in apps, Apple TV 4K for the AirPlay ecosystem, and any Windows 11 or macOS Sonoma desktop for full 4K playback. All of these devices support IPTV Smarters Pro, our recommended IPTV player, and handle 4K and 60FPS content without frame drops. Older devices like Firestick Lite or second-generation Apple TV still work but cap out at Full HD. For the smoothest 4K performance, choose hardware from the last two generations.`,
   },
   {
     q: 'How does remote activation actually work?',
-    a: `Remote activation is the easiest setup ${FOCUS_KEYWORD} method. After you contact us on WhatsApp and complete payment, our support team asks for your device identifier. For IPTV Smarter Pro this is a Device Key or MAC address shown on the app welcome screen. We register that key on our server, link it to your subscription, and within 60 seconds your channel list loads automatically the moment you reopen the app. No typing, no manual credentials, no risk of errors. If you prefer to handle it yourself, we also send the standard M3U URL and Xtream Codes credentials. Both methods produce identical 4K streaming performance.`,
+    a: `Remote activation is the easiest setup ${FOCUS_KEYWORD} method. After you contact us on WhatsApp and complete payment, our support team asks for your device identifier. For IPTV Smarters Pro this is a Device Key or MAC address shown on the app welcome screen. We register that key on our server, link it to your subscription, and within 60 seconds your channel list loads automatically the moment you reopen the app. No typing, no manual credentials, no risk of errors. If you prefer to handle it yourself, we also send the standard M3U URL and Xtream Codes credentials. Both methods produce identical 4K streaming performance.`,
   },
   {
-    q: 'What if I have an older Smart TV that cannot install IPTV Smarter Pro?',
-    a: `If your Smart TV is more than 5 years old and cannot install IPTV Smarter Pro directly, you still have options. The most popular solution is an Amazon Firestick 4K Max. It plugs into any HDMI port and turns older TVs into full 4K ${FOCUS_KEYWORD} streamers in under 5 minutes. Alternatively, an Android TV box, Nvidia Shield, or Apple TV 4K delivers the same result. Our WhatsApp support team regularly helps customers upgrade older televisions with a low-cost streaming stick. Message us and we will recommend the best device for your specific TV model and viewing habits.`,
+    q: 'What if I have an older Smart TV that cannot install IPTV Smarters Pro?',
+    a: `If your Smart TV is more than 5 years old and cannot install IPTV Smarters Pro directly, you still have options. The most popular solution is an Amazon Firestick 4K Max. It plugs into any HDMI port and turns older TVs into full 4K ${FOCUS_KEYWORD} streamers in under 5 minutes. Alternatively, an Android TV box, Nvidia Shield, or Apple TV 4K delivers the same result. Our WhatsApp support team regularly helps customers upgrade older televisions with a low-cost streaming stick. Message us and we will recommend the best device for your specific TV model and viewing habits.`,
   },
   {
     q: 'Can I switch devices later or move my subscription?',
@@ -400,9 +396,6 @@ const longFormFaqs = [
   },
 ];
 
-// ---------------------------------------------------------------------------
-// STEP ITEM
-// ---------------------------------------------------------------------------
 function StepItem({ step, index, isLast }: { step: any; index: number; isLast: boolean }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
@@ -533,13 +526,8 @@ function StepItem({ step, index, isLast }: { step: any; index: number; isLast: b
               </div>
             )}
 
-            {isInView && step.tip && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="p-3 rounded-xl bg-[#F5F3F9] border border-[#6934B8]/20 flex gap-2.5"
-              >
+            {step.tip && (
+              <div className="p-3 rounded-xl bg-[#F5F3F9] border border-[#6934B8]/20 flex gap-2.5">
                 <div className="w-6 h-6 rounded-md bg-[#6934B8]/15 flex items-center justify-center shrink-0">
                   <AlertCircle className="w-3.5 h-3.5 text-[#6934B8]" />
                 </div>
@@ -547,7 +535,7 @@ function StepItem({ step, index, isLast }: { step: any; index: number; isLast: b
                   <p className="text-[#6934B8] font-black text-[10px] uppercase tracking-wider">Pro Tip</p>
                   <p className="text-[#341766]/75 text-xs font-medium mt-0.5">{step.tip}</p>
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
         </motion.div>
@@ -556,21 +544,11 @@ function StepItem({ step, index, isLast }: { step: any; index: number; isLast: b
   );
 }
 
-// ---------------------------------------------------------------------------
-// MAIN PAGE
-// ---------------------------------------------------------------------------
 export default function SetupPage() {
-  const [activeDevice, setActiveDevice] = useState('firestick');
+  const [activeDevice, setActiveDevice] = useState<DeviceId>('firestick');
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [openFaqIndex, setOpenIndex] = useState<number | null>(0);
-  const currentData = stepData[activeDevice as keyof typeof stepData];
-  const CurrentIcon = currentData.icon;
   const iframeRef = useRef<HTMLIFrameElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVideoOpen(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   const closeVideo = () => {
     setIsVideoOpen(false);
@@ -588,7 +566,6 @@ export default function SetupPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-
       {/* ==========================================================
           HERO
       ========================================================== */}
@@ -636,7 +613,7 @@ export default function SetupPage() {
 
             <FadeInItem>
               <p className="text-base sm:text-lg md:text-xl text-[#341766]/80 font-bold max-w-2xl mx-auto leading-relaxed px-2 text-center mb-6">
-                Install <strong className="text-[#341766]">IPTV Smarter Pro</strong> and let our support team handle the rest on WhatsApp. {FOCUS_KEYWORD} setup made simple for Firestick, Smart TV, Apple, and PC or Mac.
+                Install <strong className="text-[#341766]">IPTV Smarters Pro</strong> and let our support team handle the rest on WhatsApp. {FOCUS_KEYWORD} setup made simple for Firestick, Smart TV, Apple, and PC or Mac.
               </p>
             </FadeInItem>
 
@@ -648,7 +625,6 @@ export default function SetupPage() {
                 <span className="flex items-center gap-2"><Users className="w-4 h-4 text-[#6934B8]" /> 50,000+ Viewers</span>
               </div>
             </FadeInItem>
-
 
             <FadeInItem className="mt-8 relative flex justify-center">
               <button
@@ -675,7 +651,7 @@ export default function SetupPage() {
       </section>
 
       {/* ==========================================================
-          CTA BANNER — Free Trial (dark purple)
+          CTA BANNER — Free Trial
       ========================================================== */}
       <section className="w-full bg-[#341766] py-10 px-4 sm:px-6 border-y-4 border-[#FFC300]/30 shadow-xl relative z-20 overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite] pointer-events-none" />
@@ -687,7 +663,7 @@ export default function SetupPage() {
             <div className="absolute inset-0 rounded-full bg-[#FFC300]/40 animate-ping opacity-75 pointer-events-none" />
           </div>
           <h4 className="text-white text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter leading-none drop-shadow-md max-w-2xl">
-            TRY {FOCUS_KEYWORD.toUpperCase()} WITH IPTV SMARTER PRO FREE!
+            TRY {FOCUS_KEYWORD.toUpperCase()} WITH IPTV SMARTERS PRO FREE!
           </h4>
           <p className="text-white/90 text-sm sm:text-base md:text-lg font-bold max-w-xl leading-relaxed">
             36,000+ live channels, 120,000+ movies and TV shows, live sports and PPV. Activated via WhatsApp in minutes.
@@ -714,13 +690,16 @@ export default function SetupPage() {
       {/* ==========================================================
           DEVICE SELECTION
       ========================================================== */}
-      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full bg-white">
+      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full bg-white" id="setup-steps">
         <FadeIn className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#341766] mb-4 uppercase tracking-tighter leading-none">
             Setup {FOCUS_KEYWORD} on <span className="text-[#6934B8]">Your Device</span>
           </h2>
           <p className="text-[#341766]/70 text-base md:text-lg font-bold max-w-2xl mx-auto mt-4">
-            Select your platform below for detailed step-by-step {FOCUS_KEYWORD} setup instructions.
+            Select your platform below for detailed step-by-step {FOCUS_KEYWORD} setup instructions. Need a deeper Smart TV walkthrough? Read our{' '}
+            <Link href="/blog/iptv-for-samsung-lg-roku" className="text-[#6934B8] underline underline-offset-4 hover:text-[#341766]">
+              Samsung, LG &amp; Roku IPTV Guide
+            </Link>.
           </p>
         </FadeIn>
 
@@ -757,27 +736,42 @@ export default function SetupPage() {
       </section>
 
       {/* ==========================================================
-          TIMELINE
+          TIMELINE — All 4 devices rendered in DOM for full SSR indexing
       ========================================================== */}
       <section className="py-12 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full bg-white">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6934B8] text-white font-black uppercase text-xs tracking-widest mb-4 shadow-md max-w-full border border-[#FFC300]/30">
-            <CurrentIcon className="w-4 h-4 text-[#FFC300] shrink-0" />
-            <span className="truncate">{currentData.title}</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#341766] mb-4 uppercase tracking-tighter">
-            Setup {FOCUS_KEYWORD} <span className="text-[#6934B8]">Step by Step</span>
-          </h2>
-          <p className="text-[#341766]/60 text-sm md:text-base font-bold uppercase tracking-widest mt-2">
-            Follow the steps for a flawless setup in under 10 minutes
-          </p>
-        </div>
+        {devices.map((device) => {
+          const data = stepData[device.id];
+          const DeviceIcon = data.icon;
+          const isVisible = activeDevice === device.id;
 
-        <div className="relative px-2">
-          {currentData.steps.map((step, index) => (
-            <StepItem key={step.number} step={step} index={index} isLast={index === currentData.steps.length - 1} />
-          ))}
-        </div>
+          return (
+            <div key={device.id} className={isVisible ? 'block' : 'hidden'}>
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#6934B8] text-white font-black uppercase text-xs tracking-widest mb-4 shadow-md max-w-full border border-[#FFC300]/30">
+                  <DeviceIcon className="w-4 h-4 text-[#FFC300] shrink-0" />
+                  <span className="truncate">{data.title}</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#341766] mb-4 uppercase tracking-tighter">
+                  Setup {FOCUS_KEYWORD} <span className="text-[#6934B8]">Step by Step</span>
+                </h2>
+                <p className="text-[#341766]/60 text-sm md:text-base font-bold uppercase tracking-widest mt-2">
+                  Follow the steps for a flawless setup in under 10 minutes
+                </p>
+              </div>
+
+              <div className="relative px-2">
+                {data.steps.map((step: any, index: number) => (
+                  <StepItem
+                    key={`${device.id}-${step.number}`}
+                    step={step}
+                    index={index}
+                    isLast={index === data.steps.length - 1}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
 
         {/* Success Card */}
         <motion.div
@@ -792,14 +786,27 @@ export default function SetupPage() {
             {FOCUS_KEYWORD} Setup Complete!
           </h3>
           <p className="text-[#6934B8] font-bold text-sm sm:text-base max-w-md mx-auto mb-8">
-            You are ready to stream with IPTV Smarter Pro. Enjoy 36,000+ channels and 120,000+ movies and TV shows.
+            You are ready to stream with IPTV Smarters Pro. Enjoy 36,000+ channels and 120,000+ movies and TV shows.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mx-auto">
-            <Link href="/" className="cursor-pointer w-full sm:w-auto text-center whitespace-nowrap px-6 py-4 rounded-full bg-[#FFC300] text-[#341766] font-black text-sm uppercase tracking-widest transition-transform hover:scale-105 hover:bg-[#e6b000]">
-              Back to Home
+            <Link href="/channels" className="cursor-pointer w-full sm:w-auto text-center whitespace-nowrap px-6 py-4 rounded-full bg-[#FFC300] text-[#341766] font-black text-sm uppercase tracking-widest transition-transform hover:scale-105 hover:bg-[#e6b000]">
+              Browse Channels
             </Link>
             <Link href="/pricing" className="cursor-pointer w-full sm:w-auto text-center whitespace-nowrap px-6 py-4 rounded-full bg-white text-[#6934B8] font-black text-sm uppercase tracking-widest transition-all hover:scale-105 hover:bg-[#6934B8] hover:text-white border-2 border-[#6934B8]">
               View Plans
+            </Link>
+          </div>
+          <div className="mt-6 pt-5 border-t border-[#6934B8]/15 flex flex-wrap justify-center gap-4 text-xs font-black uppercase tracking-wider text-[#6934B8]">
+            <Link href="/reviews" className="hover:text-[#341766] underline underline-offset-4">
+              Read Customer Reviews
+            </Link>
+            <span>•</span>
+            <Link href="/faq" className="hover:text-[#341766] underline underline-offset-4">
+              Setup &amp; Billing FAQ
+            </Link>
+            <span>•</span>
+            <Link href="/blog" className="hover:text-[#341766] underline underline-offset-4">
+              More Streaming Guides
             </Link>
           </div>
         </motion.div>
@@ -820,7 +827,7 @@ export default function SetupPage() {
             Why Setup {FOCUS_KEYWORD} <span className="text-[#6934B8]">With Our Team?</span>
           </h2>
           <p className="text-[#341766]/70 text-base md:text-lg font-bold max-w-3xl mx-auto leading-relaxed">
-            Thousands of households trust our hands-on WhatsApp support to handle their entire {FOCUS_KEYWORD} setup, from plan selection to IPTV Smarter Pro activation. Here is why customers pick us over generic DIY guides.
+            Thousands of households trust our hands-on WhatsApp support to handle their entire {FOCUS_KEYWORD} setup, from plan selection to IPTV Smarters Pro activation. Here is why customers pick us over generic DIY guides.
           </p>
         </FadeIn>
 
@@ -834,7 +841,7 @@ export default function SetupPage() {
             {
               icon: Zap,
               title: 'Done-For-You Activation',
-              desc: 'Send us your Device Key on WhatsApp and we handle 100% of the technical side. You only need to install IPTV Smarter Pro. Everything else is on us.',
+              desc: 'Send us your Device Key on WhatsApp and we handle 100% of the technical side. You only need to install IPTV Smarters Pro. Everything else is on us.',
             },
             {
               icon: Clock,
@@ -843,8 +850,8 @@ export default function SetupPage() {
             },
             {
               icon: PlayCircle,
-              title: 'IPTV Smarter Pro Expertise',
-              desc: 'We are specialists in IPTV Smarter Pro, one of the most stable IPTV players available. We know its settings, quirks, and optimizations inside out.',
+              title: 'IPTV Smarters Pro Expertise',
+              desc: 'We are specialists in IPTV Smarters Pro, one of the most stable IPTV players available. We know its settings, quirks, and optimizations inside out.',
             },
             {
               icon: MessageCircle,
@@ -876,7 +883,7 @@ export default function SetupPage() {
 
         <FadeIn className="mt-12 max-w-3xl mx-auto text-center">
           <p className="text-[#341766]/70 text-sm sm:text-base font-medium leading-relaxed mb-8">
-            Setup {FOCUS_KEYWORD} does not need to be complicated. Our team has activated thousands of subscriptions across Firestick, Smart TVs, Apple devices, Android boxes, and computers. Every customer gets the same white-glove service: real-time WhatsApp chat, live guidance, and a complete IPTV Smarter Pro activation service. Whether you are cord-cutting for the first time or upgrading from a slow cable package, we will get you streaming in under 10 minutes.
+            Setup {FOCUS_KEYWORD} does not need to be complicated. Our team has activated thousands of subscriptions across Firestick, Smart TVs, Apple devices, Android boxes, and computers. Every customer gets the same white-glove service: real-time WhatsApp chat, live guidance, and a complete IPTV Smarters Pro activation service. Whether you are cord-cutting for the first time or upgrading from a slow cable package, we will get you streaming in under 10 minutes.
           </p>
           <a
             href={`${CONSTANTS.CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I want ${FOCUS_KEYWORD} setup help from your team.`)}`}
@@ -902,7 +909,7 @@ export default function SetupPage() {
               Free 24 Hour {FOCUS_KEYWORD} Trial
             </h3>
             <p className="text-[#6934B8] text-sm font-medium mb-5">
-              Try IPTV Smarter Pro and our full service free for 24 hours. Message our WhatsApp team to activate instantly.
+              Try IPTV Smarters Pro and our full service free for 24 hours. Message our WhatsApp team to activate instantly.
             </p>
             <a
               href={`${CONSTANTS.CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I would like the free 24 hour ${FOCUS_KEYWORD} trial.`)}`}
@@ -922,7 +929,7 @@ export default function SetupPage() {
               24/7 {FOCUS_KEYWORD} Setup Support
             </h3>
             <p className="text-[#6934B8] text-sm font-medium mb-5">
-              Our team handles everything over WhatsApp: plan, payment, IPTV Smarter Pro activation, and full {FOCUS_KEYWORD} setup.
+              Our team handles everything over WhatsApp: plan, payment, IPTV Smarters Pro activation, and full {FOCUS_KEYWORD} setup.
             </p>
             <a
               href={`${CONSTANTS.CONTACT.whatsappUrl}?text=${encodeURIComponent(`Hi! I need ${FOCUS_KEYWORD} setup help.`)}`}
@@ -1002,7 +1009,7 @@ export default function SetupPage() {
             Setup {FOCUS_KEYWORD} <span className="text-[#6934B8]">Explained in Depth</span>
           </h2>
           <p className="text-[#341766]/70 text-base md:text-lg font-bold max-w-3xl mx-auto leading-relaxed">
-            Longer answers for the questions our support team hears most often. Each answer helps you get the most out of your {FOCUS_KEYWORD} subscription and IPTV Smarter Pro setup.
+            Longer answers for the questions our support team hears most often. Each answer helps you get the most out of your {FOCUS_KEYWORD} subscription and IPTV Smarters Pro setup.
           </p>
         </FadeIn>
 

@@ -2,35 +2,23 @@
 import type { Metadata } from 'next';
 import { CONSTANTS } from '@/lib/seo';
 
-// SEO CONSTANTS
 const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
-const YEAR = new Date().getFullYear();
+const YEAR = '2026';
 const PAGE_URL = `${SITE_URL}/reseller`;
 
-// ---------------------------------------------------------------------------
-// SEO SAFETY HELPERS
-// ---------------------------------------------------------------------------
 const clampTitle = (s: string, max = 60): string =>
   s.length <= max ? s : s.slice(0, max - 1).trimEnd() + '…';
 
 const clampDescription = (s: string, max = 158): string =>
   s.length <= max ? s : s.slice(0, max - 3).trimEnd() + '...';
 
-// ---------------------------------------------------------------------------
-// SEO STRINGS
-// ---------------------------------------------------------------------------
-const PAGE_TITLE = clampTitle(
-  `IPTV Reseller Program | Start at $299`
-);
+const PAGE_TITLE = clampTitle(`IPTV Reseller Program | Start at $299`);
 
 const PAGE_DESCRIPTION = clampDescription(
   `Become an IPTV reseller from $299. Buy wholesale credits, sell yearly at $60–120, earn up to $90 profit per sale. Instant panel access.`
 );
 
-// ---------------------------------------------------------------------------
-// METADATA CONFIGURATION
-// ---------------------------------------------------------------------------
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { absolute: PAGE_TITLE },
@@ -97,16 +85,12 @@ export const metadata: Metadata = {
   category: 'business',
 };
 
-// ---------------------------------------------------------------------------
-// JSON-LD SCHEMAS — WebPage + Service + Product + FAQ + Breadcrumbs
-// ---------------------------------------------------------------------------
 const ResellerSchema = () => {
-  const currentDate = new Date().toISOString().split('T')[0];
+  const validFromDate = '2026-01-01';
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      // WEBPAGE
       {
         '@type': 'WebPage',
         '@id': `${PAGE_URL}/#webpage`,
@@ -119,8 +103,6 @@ const ResellerSchema = () => {
         breadcrumb: { '@id': `${PAGE_URL}/#breadcrumb` },
         primaryImageOfPage: { '@id': `${PAGE_URL}/#primaryimage` },
       },
-
-      // PRIMARY IMAGE
       {
         '@type': 'ImageObject',
         '@id': `${PAGE_URL}/#primaryimage`,
@@ -130,8 +112,6 @@ const ResellerSchema = () => {
         height: 630,
         caption: `${BRAND} IPTV Reseller Program ${YEAR}`,
       },
-
-      // BREADCRUMB
       {
         '@type': 'BreadcrumbList',
         '@id': `${PAGE_URL}/#breadcrumb`,
@@ -145,8 +125,6 @@ const ResellerSchema = () => {
           },
         ],
       },
-
-      // SERVICE — B2B Offering
       {
         '@type': 'Service',
         '@id': `${PAGE_URL}/#service`,
@@ -163,7 +141,7 @@ const ResellerSchema = () => {
             priceCurrency: 'USD',
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
-            validFrom: currentDate,
+            validFrom: validFromDate,
             description:
               '10 reseller credits, full panel access, 24/7 WhatsApp support. Credits never expire.',
           },
@@ -174,7 +152,7 @@ const ResellerSchema = () => {
             priceCurrency: 'USD',
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
-            validFrom: currentDate,
+            validFrom: validFromDate,
             description:
               '20 reseller credits, priority support, API access, credits never expire.',
           },
@@ -185,14 +163,12 @@ const ResellerSchema = () => {
             priceCurrency: 'USD',
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
-            validFrom: currentDate,
+            validFrom: validFromDate,
             description:
               '30 reseller credits, dedicated support, white label option, full API access.',
           },
         ],
       },
-
-      // PRODUCT + AGGREGATEOFFER
       {
         '@type': 'Product',
         '@id': `${PAGE_URL}/#product`,
@@ -212,8 +188,6 @@ const ResellerSchema = () => {
           url: PAGE_URL,
         },
       },
-
-      // FAQ SECTION
       {
         '@type': 'FAQPage',
         '@id': `${PAGE_URL}/#faq`,
@@ -273,9 +247,6 @@ const ResellerSchema = () => {
   );
 };
 
-// ---------------------------------------------------------------------------
-// RESPONSIVE RESELLER LAYOUT
-// ---------------------------------------------------------------------------
 export default function ResellerLayout({
   children,
 }: {

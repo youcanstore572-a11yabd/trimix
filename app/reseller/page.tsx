@@ -28,14 +28,9 @@ import {
 } from 'lucide-react';
 import { FadeIn, FadeInStagger, FadeInItem } from '../components/AnimatedSection';
 
-const SITE_URL = `https://${CONSTANTS.DOMAIN}`;
 const BRAND = CONSTANTS.BRAND_NAME;
-const FOCUS_KEYWORD = CONSTANTS.FOCUS_KEYWORD;
-const YEAR = new Date().getFullYear();
+const YEAR = '2026';
 
-// ===========================================================================
-// CURRENCY SYSTEM (USD only — USA targeting)
-// ===========================================================================
 type CurrencyCode = 'USD';
 
 const CURRENCIES: Record<
@@ -53,9 +48,6 @@ const formatPrice = (usdAmount: number, currency: CurrencyCode): string => {
   return `${symbol}${converted.toLocaleString('en-US')}`;
 };
 
-// ===========================================================================
-// PRICING TIERS
-// ===========================================================================
 interface PricingTier {
   name: string;
   tag: string;
@@ -139,9 +131,6 @@ const tiers: PricingTier[] = [
   },
 ];
 
-// ===========================================================================
-// FAQS
-// ===========================================================================
 const faqs = [
   {
     q: 'What exactly is an IPTV reseller panel?',
@@ -169,9 +158,6 @@ const faqs = [
   },
 ];
 
-// ===========================================================================
-// STEPS
-// ===========================================================================
 const steps = [
   {
     icon: Wallet,
@@ -199,9 +185,6 @@ const steps = [
   },
 ];
 
-// ===========================================================================
-// VALUE CARDS
-// ===========================================================================
 const valueCards = [
   {
     icon: BadgeDollarSign,
@@ -225,9 +208,6 @@ const valueCards = [
   },
 ];
 
-// ===========================================================================
-// PANEL FEATURES
-// ===========================================================================
 const panelFeatures = [
   { icon: LayoutDashboard, label: 'Reseller Dashboard' },
   { icon: Zap, label: 'Instant Activation' },
@@ -241,9 +221,6 @@ const panelFeatures = [
   { icon: Rocket, label: 'API Automation' },
 ];
 
-// ===========================================================================
-// PRICING CARD
-// ===========================================================================
 function PricingCard({ tier, currency }: { tier: PricingTier; currency: CurrencyCode }) {
   const whatsappUrl = `${CONSTANTS.CONTACT.whatsappUrl}?text=${encodeURIComponent(tier.waMessage)}`;
 
@@ -383,9 +360,6 @@ function PricingCard({ tier, currency }: { tier: PricingTier; currency: Currency
   );
 }
 
-// ===========================================================================
-// FAQ ITEM
-// ===========================================================================
 function FaqItem({ faq, index }: { faq: { q: string; a: string }; index: number }) {
   const [isOpen, setIsOpen] = useState(index === 0);
   const num = String(index + 1).padStart(2, '0');
@@ -426,16 +400,12 @@ function FaqItem({ faq, index }: { faq: { q: string; a: string }; index: number 
   );
 }
 
-// ===========================================================================
-// MAIN PAGE
-// ===========================================================================
 export default function ResellerPage() {
   const [currency, setCurrency] = useState<CurrencyCode>('USD');
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#341766]">
-
-      {/* HERO — light */}
+      {/* HERO */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden border-b border-[#6934B8]/10 bg-gradient-to-b from-white via-[#F5F3F9] to-white">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#6934B8]/15 blur-[150px] rounded-full pointer-events-none" />
         <div
@@ -504,7 +474,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* VALUE CARDS — light gray */}
+      {/* VALUE CARDS */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#F5F3F9] w-full">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="text-center mb-14 max-w-3xl mx-auto">
@@ -546,7 +516,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* PROFIT MATH — light gray section, white inner card */}
+      {/* PROFIT MATH */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-white border-y border-[#6934B8]/10">
         <div className="max-w-5xl mx-auto">
           <FadeIn className="text-center mb-14">
@@ -631,7 +601,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* PRICING — light */}
+      {/* PRICING */}
       <section id="pricing" className="py-20 md:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full scroll-mt-24 bg-white">
         <FadeIn className="text-center mb-10 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-[#F5F3F9] border border-[#6934B8]/20 px-4 py-1.5 rounded-full mb-5">
@@ -683,7 +653,7 @@ export default function ResellerPage() {
         </FadeIn>
       </section>
 
-      {/* HOW IT WORKS — light gray */}
+      {/* HOW IT WORKS */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#F5F3F9] border-y border-[#6934B8]/10">
         <div className="max-w-6xl mx-auto">
           <FadeIn className="text-center mb-16 max-w-3xl mx-auto">
@@ -725,7 +695,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* PANEL FEATURES — white */}
+      {/* PANEL FEATURES */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-white w-full relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#6934B8]/10 blur-[140px] rounded-full pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#FFC300]/10 blur-[140px] rounded-full pointer-events-none" />
@@ -762,7 +732,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* FAQ — light gray */}
+      {/* FAQ */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#F5F3F9] w-full border-t border-[#6934B8]/10">
         <div className="max-w-5xl mx-auto">
           <FadeIn className="text-center mb-14">
@@ -785,7 +755,7 @@ export default function ResellerPage() {
         </div>
       </section>
 
-      {/* FINAL CTA — dark purple */}
+      {/* FINAL CTA — Added crawl links to stuck routes */}
       <section className="py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-white max-w-5xl mx-auto w-full">
         <FadeIn>
           <div className="relative overflow-hidden rounded-3xl border-2 border-[#FFC300]/60 bg-[#341766] p-8 md:p-14 text-center shadow-2xl">
@@ -824,6 +794,24 @@ export default function ResellerPage() {
                 >
                   Customer Plans
                   <ArrowRight className="w-5 h-5 shrink-0" />
+                </Link>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap justify-center gap-4 text-xs font-black uppercase tracking-wider text-white/85">
+                <Link href="/blog/iptv-reseller-guide-2026" className="hover:text-[#FFC300] transition-colors">
+                  2026 Reseller Guide
+                </Link>
+                <span>•</span>
+                <Link href="/setup" className="hover:text-[#FFC300] transition-colors">
+                  Device Setup Guide
+                </Link>
+                <span>•</span>
+                <Link href="/channels" className="hover:text-[#FFC300] transition-colors">
+                  Full Channel List
+                </Link>
+                <span>•</span>
+                <Link href="/reviews" className="hover:text-[#FFC300] transition-colors">
+                  Verified Reviews
                 </Link>
               </div>
             </div>

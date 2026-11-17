@@ -107,9 +107,8 @@ export const metadata: Metadata = {
 // JSON-LD SCHEMAS — Organization, Product, FAQ, BreadcrumbList
 // ---------------------------------------------------------------------------
 const PricingPageSchema = () => {
-  const currentDate = new Date().toISOString().split('T')[0];
+  const validFromDate = '2026-01-01';
 
-  // Common Digital Delivery Schema Specs
   const digitalDeliveryDetails = {
     shippingDetails: {
       '@type': 'OfferShippingDetails',
@@ -167,8 +166,6 @@ const PricingPageSchema = () => {
         },
         sameAs: Object.values(CONSTANTS.SOCIALS ?? {}),
       },
-
-      // PRODUCT - Pricing Offers with Digital Delivery
       {
         '@type': 'Product',
         '@id': `${PAGE_URL}/#product`,
@@ -197,7 +194,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '29.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `3 month ${BRAND} subscription on 1 device with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -209,7 +206,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '39.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `6 month ${BRAND} subscription on 1 device with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -221,7 +218,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '69.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `12 month ${BRAND} subscription on 1 device with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -233,7 +230,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '49.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `3 month ${BRAND} subscription on 2 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -245,7 +242,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '59.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `6 month ${BRAND} subscription on 2 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -257,7 +254,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '89.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `12 month ${BRAND} subscription on 2 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -269,7 +266,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '69.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `3 month ${BRAND} subscription on 3 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -281,7 +278,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '89.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `6 month ${BRAND} subscription on 3 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -293,7 +290,7 @@ const PricingPageSchema = () => {
             priceCurrency: CONSTANTS.CURRENCY,
             price: '139.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: PAGE_URL,
             description: `12 month ${BRAND} subscription on 3 devices with 36,000+ live channels and 120,000+ movies and TV shows.`,
@@ -301,8 +298,6 @@ const PricingPageSchema = () => {
           },
         ],
       },
-
-      // FAQ SECTION
       {
         '@type': 'FAQPage',
         '@id': `${PAGE_URL}/#faq`,
@@ -373,8 +368,6 @@ const PricingPageSchema = () => {
           },
         ],
       },
-
-      // BREADCRUMB
       {
         '@type': 'BreadcrumbList',
         '@id': `${PAGE_URL}/#breadcrumb`,
@@ -406,9 +399,6 @@ const PricingPageSchema = () => {
   );
 };
 
-// ---------------------------------------------------------------------------
-// RESPONSIVE PRICING LAYOUT
-// ---------------------------------------------------------------------------
 export default function PricingLayout({
   children,
 }: {

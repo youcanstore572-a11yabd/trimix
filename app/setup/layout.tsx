@@ -2,9 +2,6 @@
 import type { Metadata } from 'next';
 import { CONSTANTS } from '@/lib/seo';
 
-// ---------------------------------------------------------------------------
-// SEO SAFETY HELPERS
-// ---------------------------------------------------------------------------
 const clampTitle = (s: string, max = 60): string =>
   s.length <= max ? s : s.slice(0, max - 1).trimEnd() + '…';
 
@@ -15,9 +12,6 @@ const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
 const PAGE_URL = `${SITE_URL}/setup`;
 
-// ---------------------------------------------------------------------------
-// SEO STRINGS
-// ---------------------------------------------------------------------------
 const PAGE_TITLE = clampTitle(
   `IPTV Setup Guide | Firestick, Smart TV & Mobile`
 );
@@ -26,9 +20,6 @@ const PAGE_DESCRIPTION = clampDescription(
   `IPTV setup guide for Firestick, Smart TV, Android & iOS. Install IPTV Smarters Pro in 10 min with WhatsApp help and a free trial.`
 );
 
-// ---------------------------------------------------------------------------
-// METADATA
-// ---------------------------------------------------------------------------
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -90,7 +81,7 @@ export const metadata: Metadata = {
     'iptv setup guide',
     'iptv firestick setup',
     'iptv smart tv install',
-    'IPTV Smarter Pro setup',
+    'IPTV Smarters Pro setup',
     'best iptv provider',
     'iptv provider',
     'iptv installation guide',
@@ -104,14 +95,10 @@ export const metadata: Metadata = {
   ],
 };
 
-// ---------------------------------------------------------------------------
-// JSON-LD SCHEMA — HowTo + FAQPage + Breadcrumbs
-// ---------------------------------------------------------------------------
 const SetupPageSchema = () => {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      // BRAND ENTITY
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
@@ -131,8 +118,6 @@ const SetupPageSchema = () => {
         },
         sameAs: Object.values(CONSTANTS.SOCIALS ?? {}),
       },
-
-      // HOW TO SCHEMA
       {
         '@type': 'HowTo',
         '@id': `${PAGE_URL}/#howto`,
@@ -167,7 +152,7 @@ const SetupPageSchema = () => {
         tool: [
           {
             '@type': 'HowToTool',
-            name: 'IPTV Smarter Pro (recommended IPTV player)',
+            name: 'IPTV Smarters Pro (recommended IPTV player)',
           },
           {
             '@type': 'HowToTool',
@@ -187,43 +172,38 @@ const SetupPageSchema = () => {
             position: 2,
             name: 'Contact Support on WhatsApp',
             text: 'Message our team on WhatsApp. We confirm pricing, send a secure payment link, and walk you through the setup from start to finish.',
-            url: CONSTANTS.CONTACT?.whatsappUrl || '#',
+            url: `${PAGE_URL}#setup-steps`,
           },
           {
             '@type': 'HowToStep',
             position: 3,
-            name: 'Download IPTV Smarter Pro',
-            text: 'Install IPTV Smarter Pro, one of the fastest and most stable IPTV players for Firestick, Smart TVs, Apple devices, and PC or Mac.',
-            url: 'https://iboplayer.pro/',
+            name: 'Download IPTV Smarters Pro',
+            text: 'Install IPTV Smarters Pro, one of the fastest and most stable IPTV players for Firestick, Smart TVs, Apple devices, and PC or Mac.',
+            url: `${PAGE_URL}#setup-steps`,
           },
           {
             '@type': 'HowToStep',
             position: 4,
             name: 'Choose Auto or Manual Setup',
             text: 'Choose Auto Setup where our team activates remotely using your Device Key, or Manual Setup where you enter the M3U URL or Xtream Codes credentials we send you on WhatsApp.',
+            url: `${PAGE_URL}#setup-steps`,
           },
           {
             '@type': 'HowToStep',
             position: 5,
             name: 'Load Content in 1 to 2 Minutes',
-            text: 'Once activated, IPTV Smarter Pro automatically loads your full channel list, movies and TV shows library, and 7-day EPG guide.',
+            text: 'Once activated, IPTV Smarters Pro automatically loads your full channel list, movies and TV shows library, and 7-day EPG guide.',
+            url: `${PAGE_URL}#setup-steps`,
           },
           {
             '@type': 'HowToStep',
             position: 6,
-            name: 'Test on Your Free Trial',
-            text: 'Try everything on the free 24 hour trial. Check the picture quality, sport lineup, and playback on your device before you upgrade to a paid plan.',
-          },
-          {
-            '@type': 'HowToStep',
-            position: 7,
-            name: 'Start Streaming',
+            name: 'Start Streaming in 4K',
             text: 'Enjoy instant access to 36,000+ live channels and 120,000+ movies and TV shows in 4K quality. Sport coverage includes the NFL, NBA, MLB, NHL, UFC, boxing PPV, plus ESPN, Fox, NBC, CBS, and ABC.',
+            url: `${PAGE_URL}#setup-steps`,
           },
         ],
       },
-
-      // FAQ SCHEMA
       {
         '@type': 'FAQPage',
         '@id': `${PAGE_URL}/#faq`,
@@ -241,12 +221,12 @@ const SetupPageSchema = () => {
             name: 'Which IPTV player do you recommend?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: `We recommend IPTV Smarter Pro for the fastest channel zapping, lowest RAM usage, and best 4K performance across Firestick, Smart TVs, Apple devices, and PC or Mac. It is one of our top picks for smooth playback.`,
+              text: `We recommend IPTV Smarters Pro for the fastest channel zapping, lowest RAM usage, and best 4K performance across Firestick, Smart TVs, Apple devices, and PC or Mac. It is one of our top picks for smooth playback.`,
             },
           },
           {
             '@type': 'Question',
-            name: 'Do I need to activate IPTV Smarter Pro separately?',
+            name: 'Do I need to activate IPTV Smarters Pro separately?',
             acceptedAnswer: {
               '@type': 'Answer',
               text: 'The activation service is included free with every subscription. Choose Auto Setup where you send us your Device Key and we activate remotely, or Manual Setup where you enter M3U or Xtream Codes yourself.',
@@ -257,7 +237,7 @@ const SetupPageSchema = () => {
             name: 'How long does the full setup take?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Most customers are streaming within 10 minutes. Installing IPTV Smarter Pro takes about 2 minutes, activation takes 1 to 2 minutes, and content loading takes 1 to 2 minutes.',
+              text: 'Most customers are streaming within 10 minutes. Installing IPTV Smarters Pro takes about 2 minutes, activation takes 1 to 2 minutes, and content loading takes 1 to 2 minutes.',
             },
           },
           {
@@ -270,7 +250,7 @@ const SetupPageSchema = () => {
           },
           {
             '@type': 'Question',
-            name: 'What should I do if I get a login error in IPTV Smarter Pro?',
+            name: 'What should I do if I get a login error in IPTV Smarters Pro?',
             acceptedAnswer: {
               '@type': 'Answer',
               text: 'Confirm you selected the Xtream Codes API method, not M3U, and that there are no extra spaces in your username or password. If it persists, message us on WhatsApp and most issues resolve within 2 minutes.',
@@ -294,8 +274,6 @@ const SetupPageSchema = () => {
           },
         ],
       },
-
-      // BREADCRUMBS
       {
         '@type': 'BreadcrumbList',
         '@id': `${PAGE_URL}/#breadcrumb`,
@@ -327,9 +305,6 @@ const SetupPageSchema = () => {
   );
 };
 
-// ---------------------------------------------------------------------------
-// RESPONSIVE SETUP LAYOUT
-// ---------------------------------------------------------------------------
 export default function SetupLayout({
   children,
 }: {

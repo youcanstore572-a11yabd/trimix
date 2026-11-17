@@ -6,7 +6,7 @@ const SITE_URL = CONSTANTS.SITE_URL;
 
 export function ProductSchema() {
   const commonOfferDefaults = {
-    validFrom: '2025-01-01',
+    validFrom: '2026-01-01',
     hasMerchantReturnPolicy: {
       '@type': 'MerchantReturnPolicy',
       applicableCountry: ['US'],
@@ -62,13 +62,6 @@ export function ProductSchema() {
     brand: {
       '@type': 'Brand',
       name: CONSTANTS.BRAND_NAME,
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '1255',
-      bestRating: '5',
-      worstRating: '1',
     },
     offers: [
       {

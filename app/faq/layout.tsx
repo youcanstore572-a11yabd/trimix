@@ -95,14 +95,37 @@ export const metadata: Metadata = {
   category: 'entertainment',
 };
 
-// ---------------------------------------------------------------------------
-// JSON-LD SCHEMA — Organization, WebPage, ImageObject, Breadcrumb, FAQ
-// ---------------------------------------------------------------------------
+const FAQ_SCHEMA_ITEMS = [
+  { q: 'What is IPTV and how is it different from traditional cable TV?', a: 'IPTV stands for Internet Protocol Television. Instead of a coax cable, fibre receiver, or satellite dish from traditional providers, the TV signals are streamed directly over your internet connection. This means no physical cable box is needed. You can watch thousands of channels in Full HD and 4K anywhere with just an internet connection.' },
+  { q: 'How fast will I get set up after payment?', a: 'Once you confirm your plan and complete payment, our team handles the setup with you live on WhatsApp. We send your login details, walk you through installing a player like IPTV Smarters Pro, and send the test content, all in the same chat. Most customers are streaming within 10 minutes.' },
+  { q: 'Can I watch on multiple TVs or screens at the same time?', a: 'Yes, depending on your plan. You can pick 1, 2, or 3 simultaneous screens during checkout. That means multiple household members can watch different things at the same time without any interruption.' },
+  { q: 'How does the free trial work?', a: 'Message us on WhatsApp and we will set you up with a free 24 hour trial so you can test the 4K picture quality, check the sport and movie lineup, and make sure everything runs smooth on your own device and internet connection. Upgrade to a paid plan only when you are happy.' },
+  { q: 'Am I locked into a contract or auto-renewal?', a: 'No, absolutely not. We offer prepaid subscriptions for 3, 6, or 12 months. When your period ends, the streaming connection stops automatically. There are never any automatic charges or silent renewals.' },
+  { q: 'Can I test the service before I pay?', a: 'Yes, that is exactly how we do things. Contact our WhatsApp support team and we will give you a free 24 hour trial so you can see the picture quality on your own TV before you commit to a subscription.' },
+  { q: 'Are ESPN, Fox Sports, NBC Sports, and CBS Sports included?', a: 'Yes. Every channel package includes the complete sports lineup in smooth 60FPS quality. Watch the NFL, NBA, MLB, NHL, UFC, college football, NASCAR, and major fight nights, all included.' },
+  { q: 'Do I pay extra for UFC or Boxing PPV events?', a: 'No, all worldwide Pay Per View events are included by default. This covers numbered UFC Main Cards, Championship Boxing, WWE events, AEW, and major MMA events at no additional cost.' },
+  { q: 'Do foreign movies and series have English subtitles?', a: 'Over 95% of our complete VOD catalog, more than 120,000 movies and TV shows from Netflix, HBO Max, Disney Plus, Hulu, and cinema releases, includes selectable English subtitles and optional original audio tracks.' },
+  { q: 'Does the EPG TV guide and catch up feature work properly?', a: 'Yes. Our interactive EPG TV guide is synced automatically every 6 hours with current programming. For major international channels, a 7 day catch up and replay feature is available.' },
+  { q: 'Can I hide unnecessary foreign channel lists?', a: 'Absolutely. You can easily hide country groups in your IPTV player like IPTV Smarters Pro or TiviMate. Our support team can also adjust your account on request so you only receive channels you actually watch.' },
+  { q: 'How stable is the picture quality during popular sport events?', a: 'Our servers use dynamic load balancing through dedicated global data centres. Even during peak moments like the Super Bowl, NBA Finals, World Series, or a major UFC title fight, the bitrate stays stable without frame drops.' },
+  { q: 'On which TVs and devices can I install IPTV?', a: 'Our service is universally compatible with Smart TVs (Samsung Tizen, LG webOS, Sony Android TV, Google TV), Amazon Fire TV Stick, Google Chromecast with Google TV, Apple TV 4K, Nvidia Shield, MAG boxes, Windows PC, Mac, iPhone, iPad, and Android phones.' },
+  { q: 'Which IPTV apps deliver the best viewing experience?', a: 'For Android TV and Fire TV Stick, we recommend IPTV Smarters Pro for the fastest channel zapping, lowest RAM usage, and best 4K performance. For Samsung and LG Smart TVs, IPTV Smarters Pro or IBO Player Pro work best. For Apple TV users, IPTVX or GSE Smart IPTV are the top choices.' },
+  { q: 'What minimum internet speed do I need for 4K and 60FPS?', a: 'For Full HD channels we recommend at least 15 to 20 Mbps. For 4K Ultra HD and 60FPS sport streams, 25 to 30 Mbps. A wired Ethernet cable or 5GHz Wi-Fi network always provides the most stable experience.' },
+  { q: 'What should I do if a channel buffers or freezes?', a: 'Buffering is caused in 99% of cases by temporary Wi-Fi interference or a full app cache. Restart your router and modem, restart your IPTV app, or switch the stream engine between HLS and TS in the player settings.' },
+  { q: 'Do I need technical skills to complete the installation?', a: 'No. Installation takes less than 5 minutes on average, and our team walks you through it on WhatsApp. You download a player app from your device store, enter the login details we send you, and the channels load automatically.' },
+  { q: 'Can I use my account while travelling abroad?', a: 'Yes. Our streams are accessible worldwide without geographic restrictions. You can use your account worry free in your holiday home, hotel, or anywhere else during your travels.' },
+  { q: 'What secure payment options do you support?', a: 'You can pay safely via Credit Card (Visa, Mastercard, American Express), PayPal, and cryptocurrencies (Bitcoin, USDT, Ethereum) through a heavily secured 256 bit SSL connection. All prices are in USD $.' },
+  { q: 'Is a VPN required?', a: 'No. A VPN is not required because all our streams run through secure, encrypted connections. If you prefer extra privacy, our streaming servers are 100% compatible with all major VPN providers.' },
+  { q: 'How is my personal data protected?', a: 'We respect applicable privacy law, including the CCPA and other US state privacy regulations, plus international data protection standards. We never store viewing history or channel logs, never sell data to third parties, and never retain credit card or bank account numbers on our local servers.' },
+  { q: 'What happens if I lose my login credentials?', a: 'No problem. Send a message with your order number or registration email to our WhatsApp customer service team, and our support desk will resend your login details within 5 minutes.' },
+  { q: 'Do I receive an invoice or receipt after payment?', a: 'Yes. Immediately after completing the transaction, you will receive an automated digital order confirmation and invoice in your inbox.' },
+  { q: 'Are there hidden fees or admin charges?', a: 'No. The prices shown on our pricing page are fully all in. You pay once for your chosen period with no unexpected surcharges or connection fees.' },
+];
+
 const FAQPageSchema = () => {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      // BRAND ENTITY
       {
         '@type': 'Organization',
         '@id': `${SITE_URL}/#organization`,
@@ -122,8 +145,6 @@ const FAQPageSchema = () => {
         },
         sameAs: Object.values(CONSTANTS.SOCIALS ?? {}),
       },
-
-      // WEBPAGE
       {
         '@type': 'WebPage',
         '@id': `${PAGE_URL}/#webpage`,
@@ -136,8 +157,6 @@ const FAQPageSchema = () => {
         breadcrumb: { '@id': `${PAGE_URL}/#breadcrumb` },
         primaryImageOfPage: { '@id': `${PAGE_URL}/#primaryimage` },
       },
-
-      // PRIMARY IMAGE
       {
         '@type': 'ImageObject',
         '@id': `${PAGE_URL}/#primaryimage`,
@@ -147,8 +166,6 @@ const FAQPageSchema = () => {
         height: 630,
         caption: `${BRAND} FAQ - Help Center and Answers`,
       },
-
-      // BREADCRUMB
       {
         '@type': 'BreadcrumbList',
         '@id': `${PAGE_URL}/#breadcrumb`,
@@ -157,93 +174,17 @@ const FAQPageSchema = () => {
           { '@type': 'ListItem', position: 2, name: 'FAQ', item: PAGE_URL },
         ],
       },
-
-      // FAQ PAGE
       {
         '@type': 'FAQPage',
         '@id': `${PAGE_URL}/#faq`,
-        mainEntity: [
-          {
-            '@type': 'Question',
-            name: `What is ${BRAND} and how does it work?`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `${BRAND} is a premium IPTV streaming service that delivers live television channels, movies, and TV shows over your internet connection. After you pick a plan and complete payment via WhatsApp, our team sends your M3U playlist and Xtream Codes credentials so you can start watching on any supported device in under 10 minutes.`,
-            },
+        mainEntity: FAQ_SCHEMA_ITEMS.map((item) => ({
+          '@type': 'Question',
+          name: item.q,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.a,
           },
-          {
-            '@type': 'Question',
-            name: `How many live channels and on-demand titles does ${BRAND} offer?`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `${BRAND} includes 36,000+ live TV channels covering sports, news, entertainment, and international networks, plus an on-demand library of 120,000+ movies and TV shows in 4K Ultra HD where supported.`,
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Which devices are compatible with the service?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'Almost any modern streaming device: Amazon Firestick and Fire TV, Samsung and LG Smart TVs, Android TV, Google TV, Apple TV, iPhone, iPad, Windows PC, Mac, plus MAG and Formuler set top boxes. If unsure, message our WhatsApp support team and we will confirm your device before you subscribe.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'How fast does setup take after ordering?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'Most customers are streaming in under 10 minutes. After payment is confirmed, our team messages you on WhatsApp with your login credentials, guides you through installing a player like IPTV Smarters Pro or TiviMate, and confirms your channel list loads correctly.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Can I test the service before I pay?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'Yes. Request a free 24-hour trial on WhatsApp and we will set you up so you can test the 4K picture quality, verify the sports and movie lineup, and confirm smooth playback on your device and internet connection. Upgrade to a paid plan only when you are ready.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Which payment methods are accepted?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'We accept Credit Card (Visa, Mastercard, American Express), PayPal, and cryptocurrencies (Bitcoin, Ethereum, USDT) through a secure encrypted checkout. All prices are listed in US Dollars (USD) with no hidden fees and no automatic renewals.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Am I tied to a contract or auto-renewal?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'No. All plans are prepaid, one-time payments for a fixed term (3, 6, or 12 months). There are no long-term contracts and no automatic charges. When your term ends, the service stops on its own unless you choose to renew.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'Do I need a VPN to use the service?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'No VPN is required. Our servers are optimized to deliver smooth, buffer-free streaming on your home connection. If your internet provider applies streaming throttling during peak hours, our support team can help you troubleshoot, and a VPN can be used if needed.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'What should I do if a channel buffers or freezes?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'In most cases, buffering is caused by temporary Wi-Fi interference or a full app cache. Restart your router and modem, restart your IPTV app, or switch the stream type between HLS and TS in your player settings. If it persists, contact our 24/7 WhatsApp support team for immediate assistance.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: `How do I contact ${BRAND} support?`,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: `Message our team directly on WhatsApp for the fastest response, typically within 2 minutes. You can also email ${CONSTANTS.CONTACT?.email || 'support'} for non-urgent questions. Support is available 24 hours a day, 7 days a week.`,
-            },
-          },
-        ],
+        })),
       },
     ],
   };
@@ -258,9 +199,6 @@ const FAQPageSchema = () => {
   );
 };
 
-// ---------------------------------------------------------------------------
-// RESPONSIVE FAQ LAYOUT
-// ---------------------------------------------------------------------------
 export default function FAQLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full overflow-x-hidden min-h-screen flex flex-col bg-[#04208B] text-[#EDEADE]">

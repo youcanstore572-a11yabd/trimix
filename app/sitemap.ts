@@ -6,144 +6,114 @@ import { channelsData } from '@/lib/channels-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = `https://${CONSTANTS.DOMAIN}`;
-  const now = new Date();
+
+  // Use real, stable modification dates instead of dynamic `new Date()`
+  // so Googlebot trusts your freshness signals and prioritizes real updates.
+  const coreLastMod = new Date('2026-11-16T00:00:00.000Z');
+  const channelsLastMod = new Date('2026-11-12T00:00:00.000Z');
 
   // -------------------------------------------------------------------------
-  // 1. CORE STATIC PAGES
+  // 1. CORE STATIC PAGES (High-Intent & Revenue Routes Only)
   // -------------------------------------------------------------------------
   const corePages: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
       priority: 0.95,
     },
     {
-      url: `${baseUrl}/setup`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/trimix-iptv`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
       priority: 0.95,
     },
     {
       url: `${baseUrl}/reseller`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
-      priority: 0.95,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/setup`,
+      lastModified: coreLastMod,
+      changeFrequency: 'weekly',
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/reviews`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
       priority: 0.85,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'weekly',
-      priority: 0.8,
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/support`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: now,
+      lastModified: coreLastMod,
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.65,
     },
   ];
 
   // -------------------------------------------------------------------------
-  // 2. CHANNELS INDEX
+  // 2. CHANNELS INDEX & DYNAMIC CATEGORIES
   // -------------------------------------------------------------------------
   const channelsIndex: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/channels`,
-      lastModified: now,
+      lastModified: channelsLastMod,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
   ];
 
-  // -------------------------------------------------------------------------
-  // 3. LEGAL & POLICY PAGES
-  // -------------------------------------------------------------------------
-  const legalPages: MetadataRoute.Sitemap = [
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: now,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: now,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/refund-policy`,
-      lastModified: now,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/dmca`,
-      lastModified: now,
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-  ];
-
-  // -------------------------------------------------------------------------
-  // 4. DYNAMIC CHANNEL CATEGORIES
-  // -------------------------------------------------------------------------
   const channelPages: MetadataRoute.Sitemap = channelsData.map((category) => ({
     url: `${baseUrl}/channels/${category.slug}`,
-    lastModified: now,
+    lastModified: channelsLastMod,
     changeFrequency: 'weekly',
     priority: 0.85,
   }));
 
   // -------------------------------------------------------------------------
-  // 5. DYNAMIC BLOG POSTS
+  // 3. DYNAMIC BLOG POSTS
   // -------------------------------------------------------------------------
   const blogPostPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.date),
     changeFrequency: 'monthly',
-    priority: 0.7,
+    priority: 0.8,
   }));
 
   // -------------------------------------------------------------------------
-  // COMBINE & RETURN
+  // COMBINE & RETURN (Legal pages intentionally excluded from sitemap)
   // -------------------------------------------------------------------------
   return [
     ...corePages,
     ...channelsIndex,
     ...channelPages,
     ...blogPostPages,
-    ...legalPages,
   ];
 }

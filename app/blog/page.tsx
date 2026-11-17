@@ -10,9 +10,11 @@ import {
   Sparkles,
   Tag,
   MessageCircle,
-  Search,
   BookOpen,
   TrendingUp,
+  Tv,
+  Star,
+  HelpCircle,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -24,7 +26,8 @@ const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
 const FOCUS_KEYWORD = CONSTANTS.FOCUS_KEYWORD;
 const PAGE_URL = `${SITE_URL}/blog`;
-const POSTS_PER_PAGE = 6;
+
+const POSTS_PER_PAGE = 7; // 1 featured + 6 grid cards on page 1
 
 // ---------------------------------------------------------------------------
 // SEO SAFETY HELPERS
@@ -47,100 +50,135 @@ const PAGE_DESCRIPTION = clampDescription(
 );
 
 // ---------------------------------------------------------------------------
-// METADATA
+// SORT POSTS BY DATE DESC
 // ---------------------------------------------------------------------------
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: PAGE_TITLE,
-    absolute: PAGE_TITLE,
-  },
-  description: PAGE_DESCRIPTION,
-  authors: [{ name: `${BRAND} Team` }],
-  creator: BRAND,
-  publisher: BRAND,
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  alternates: {
-    canonical: PAGE_URL,
-    languages: {
-      'en-US': PAGE_URL,
-    },
-  },
-  openGraph: {
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    url: PAGE_URL,
-    siteName: BRAND,
-    locale: CONSTANTS.LOCALE,
-    type: 'website',
-    images: [
-      {
-        url: `${SITE_URL}/img/structer.webp`,
-        width: 1200,
-        height: 630,
-        alt: `${BRAND} Blog - Setup Guides and Streaming Tips`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: PAGE_TITLE,
-    description: PAGE_DESCRIPTION,
-    images: [`${SITE_URL}/img/structer.webp`],
-  },
-  category: 'entertainment',
-  keywords: [
-    `${FOCUS_KEYWORD} blog`,
-    `${FOCUS_KEYWORD} guide`,
-    `${FOCUS_KEYWORD} tips`,
-    'best iptv provider',
-    'iptv provider blog',
-    'iptv setup guide',
-    'iptv firestick setup',
-    'iptv smarters pro guide',
-    'iptv reviews',
-    'iptv subscription',
-    '4k iptv',
-    'iptv smart tv guide',
-    'streaming tips',
-    'iptv news 2026',
-  ],
-};
+const sortedPosts = [...blogPosts].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
 
 // ---------------------------------------------------------------------------
-// CATEGORY CONFIG
+// DEV-ONLY DUPLICATE GUARD
 // ---------------------------------------------------------------------------
-const CATEGORIES = [
-  { id: 'all', label: 'All Posts' },
-  { id: 'setup', label: 'Setup Guides' },
-  { id: 'review', label: 'Reviews' },
-  { id: 'sports', label: 'Live Sports' },
-  { id: 'tips', label: 'Tips & Tricks' },
-  { id: 'news', label: 'News' },
-];
+if (process.env.NODE_ENV !== 'production') {
+  const ids = sortedPosts.map((p) => p.id);
+  const slugs = sortedPosts.map((p) => p.slug);
+
+  const dupIds = ids.filter((id, i) => ids.indexOf(id) !== i);
+  const dupSlugs = slugs.filter((s, i) => slugs.indexOf(s) !== i);
+
+  if (dupIds.length) {
+    console.warn('[blog] Duplicate post id(s) found in lib/blog.ts:', [...new Set(dupIds)]);
+  }
+  if (dupSlugs.length) {
+    console.warn('[blog] Duplicate post slug(s) found in lib/blog.ts:', [...new Set(dupSlugs)]);
+  }
+}
+
+const TOTAL_PAGES = Math.max(1, Math.ceil(sortedPosts.length / POSTS_PER_PAGE));
+
+function getPagePosts(page: number) {
+  const safePage = Math.min(Math.max(1, page), TOTAL_PAGES);
+  const start = (safePage - 1) * POSTS_PER_PAGE;
+  return sortedPosts.slice(start, start + POSTS_PER_PAGE);
+}
+
+// ---------------------------------------------------------------------------
+// METADATA — page-aware canonical
+// ---------------------------------------------------------------------------
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const rawPage = Number(params.page || '1');
+  const page = Number.isFinite(rawPage) ? Math.min(Math.max(1, rawPage), TOTAL_PAGES) : 1;
+
+  const isFirstPage = page === 1;
+  const canonical = isFirstPage ? PAGE_URL : `${PAGE_URL}?page=${page}`;
+
+  const title = isFirstPage
+    ? PAGE_TITLE
+    : clampTitle(`${BRAND} Blog — Page ${page} of ${TOTAL_PAGES} | Guides & Tips`);
+
+  const description = isFirstPage
+    ? PAGE_DESCRIPTION
+    : clampDescription(
+        `Page ${page} of the ${BRAND} blog. More setup guides, reviews, and streaming tips for Firestick, Smart TV, and mobile.`
+      );
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: title, absolute: title },
+    description,
+    authors: [{ name: `${BRAND} Team` }],
+    creator: BRAND,
+    publisher: BRAND,
+    formatDetection: { email: false, address: false, telephone: false },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    alternates: {
+      canonical,
+      languages: { 'en-US': canonical },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: BRAND,
+      locale: CONSTANTS.LOCALE,
+      type: 'website',
+      images: [
+        {
+          url: `${SITE_URL}/img/structer.webp`,
+          width: 1200,
+          height: 630,
+          alt: `${BRAND} Blog - Setup Guides and Streaming Tips`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${SITE_URL}/img/structer.webp`],
+    },
+    category: 'entertainment',
+    keywords: [
+      `${FOCUS_KEYWORD} blog`,
+      `${FOCUS_KEYWORD} guide`,
+      `${FOCUS_KEYWORD} tips`,
+      'best iptv provider',
+      'iptv provider blog',
+      'iptv setup guide',
+      'iptv firestick setup',
+      'iptv smarters pro guide',
+      'iptv reviews',
+      'iptv subscription',
+      '4k iptv',
+      'iptv smart tv guide',
+      'streaming tips',
+      'iptv news 2026',
+    ],
+  };
+}
 
 function getPostCategory(post: any): string {
   if (post.category) return post.category;
   const kw = (post.keywords || []).join(' ').toLowerCase();
   const title = (post.title || '').toLowerCase();
   if (title.includes('setup') || title.includes('install') || kw.includes('setup guide')) return 'setup';
-  if (title.includes('review') || title.includes('compare') || title.includes('best')) return 'review';
-  if (title.includes('sport') || kw.includes('live sports')) return 'sports';
+  if (title.includes('review') || title.includes('compare') || title.includes('best') || title.includes('vs')) return 'review';
+  if (title.includes('sport') || title.includes('nfl') || kw.includes('live sports')) return 'sports';
   if (title.includes('tip') || title.includes('troubleshoot')) return 'tips';
   return 'news';
 }
@@ -148,17 +186,17 @@ function getPostCategory(post: any): string {
 function getCategoryLabel(id: string): string {
   const map: Record<string, string> = {
     setup: 'Setup Guide',
-    review: 'Review',
+    review: 'Comparison & Review',
     sports: 'Live Sports',
     tips: 'Tips & Tricks',
-    news: 'News',
+    news: 'Guide',
   };
   return map[id] || 'Guide';
 }
 
 function getReadTime(post: any): string {
   if (post.readTime) return post.readTime;
-  const words = (post.content || '').split(/\s+/).length;
+  const words = (post.content || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length;
   const mins = Math.max(5, Math.round(words / 220));
   return `${mins} min read`;
 }
@@ -178,19 +216,11 @@ function formatDate(dateStr: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// SORT POSTS BY DATE DESC
-// ---------------------------------------------------------------------------
-const sortedPosts = [...blogPosts].sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-);
-
-const featuredPost = sortedPosts[0];
-const restPosts = sortedPosts.slice(1);
-
-// ---------------------------------------------------------------------------
 // JSON-LD SCHEMAS
 // ---------------------------------------------------------------------------
-const BlogSchema = () => {
+const BlogSchema = ({ page, posts }: { page: number; posts: typeof blogPosts }) => {
+  const canonical = page === 1 ? PAGE_URL : `${PAGE_URL}?page=${page}`;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -199,10 +229,10 @@ const BlogSchema = () => {
         '@id': `${PAGE_URL}/#blog`,
         name: `${BRAND} Blog`,
         description: `Setup guides, reviews, and ${FOCUS_KEYWORD} tips for Firestick, Smart TV, and mobile streaming.`,
-        url: PAGE_URL,
+        url: canonical,
         inLanguage: 'en-US',
         publisher: { '@id': `${SITE_URL}/#organization` },
-        blogPost: blogPosts.map((post) => ({
+        blogPost: posts.map((post) => ({
           '@type': 'BlogPosting',
           '@id': `${SITE_URL}/blog/${post.slug}/#article`,
           headline: post.title,
@@ -211,10 +241,7 @@ const BlogSchema = () => {
           datePublished: post.date,
           dateModified: post.date,
           inLanguage: 'en-US',
-          author: {
-            '@type': 'Person',
-            name: post.author,
-          },
+          author: { '@type': 'Person', name: post.author },
           publisher: { '@id': `${SITE_URL}/#organization` },
           image: {
             '@type': 'ImageObject',
@@ -225,8 +252,8 @@ const BlogSchema = () => {
       },
       {
         '@type': 'CollectionPage',
-        '@id': `${PAGE_URL}/#collection`,
-        url: PAGE_URL,
+        '@id': `${canonical}/#collection`,
+        url: canonical,
         name: PAGE_TITLE,
         description: PAGE_DESCRIPTION,
         inLanguage: 'en-US',
@@ -235,20 +262,20 @@ const BlogSchema = () => {
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': `${PAGE_URL}/#breadcrumb`,
+        '@id': `${canonical}/#breadcrumb`,
         itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: SITE_URL,
-          },
-          {
-            '@type': 'ListItem',
-            position: 2,
-            name: 'Blog',
-            item: PAGE_URL,
-          },
+          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+          { '@type': 'ListItem', position: 2, name: 'Blog', item: PAGE_URL },
+          ...(page > 1
+            ? [
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: `Page ${page}`,
+                  item: canonical,
+                },
+              ]
+            : []),
         ],
       },
     ],
@@ -314,9 +341,9 @@ function BlogCard({ post, priority = false }: { post: any; priority?: boolean })
           <span>{post.author}</span>
         </div>
 
-        <h3 className="text-base md:text-lg font-black text-[#341766] uppercase tracking-tight leading-snug mb-3 line-clamp-2 group-hover:text-[#6934B8] transition-colors">
+        <h2 className="text-base md:text-lg font-black text-[#341766] uppercase tracking-tight leading-snug mb-3 line-clamp-2 group-hover:text-[#6934B8] transition-colors">
           {post.title}
-        </h3>
+        </h2>
 
         <p className="text-[#341766]/70 text-sm font-medium leading-relaxed line-clamp-3 mb-4 flex-1">
           {post.description || post.excerpt || ''}
@@ -410,33 +437,106 @@ function FeaturedCard({ post }: { post: any }) {
 }
 
 // ---------------------------------------------------------------------------
+// PAGINATION COMPONENT
+// ---------------------------------------------------------------------------
+function Pagination({ currentPage }: { currentPage: number }) {
+  if (TOTAL_PAGES <= 1) return null;
+
+  const pageNumbers: number[] = [];
+  for (let i = 1; i <= TOTAL_PAGES; i++) pageNumbers.push(i);
+
+  const hrefFor = (page: number) =>
+    page === 1 ? '/blog' : `/blog?page=${page}`;
+
+  return (
+    <nav
+      aria-label="Blog pagination"
+      className="flex flex-wrap items-center justify-center gap-2 mb-16"
+    >
+      {/* Prev */}
+      {currentPage > 1 ? (
+        <Link
+          href={hrefFor(currentPage - 1)}
+          rel="prev"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Prev
+        </Link>
+      ) : (
+        <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#EDEADE]/5 border border-white/10 text-[#EDEADE]/40 text-xs font-black uppercase tracking-wider cursor-not-allowed">
+          <ChevronLeft className="w-4 h-4" />
+          Prev
+        </span>
+      )}
+
+      {/* Page numbers */}
+      {pageNumbers.map((page) => {
+        const isActive = page === currentPage;
+        return isActive ? (
+          <span
+            key={page}
+            aria-current="page"
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#FFD532] text-[#341766] text-sm font-black shadow-md"
+          >
+            {page}
+          </span>
+        ) : (
+          <Link
+            key={page}
+            href={hrefFor(page)}
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-sm font-black transition-colors"
+          >
+            {page}
+          </Link>
+        );
+      })}
+
+      {/* Next */}
+      {currentPage < TOTAL_PAGES ? (
+        <Link
+          href={hrefFor(currentPage + 1)}
+          rel="next"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+        >
+          Next
+          <ChevronRight className="w-4 h-4" />
+        </Link>
+      ) : (
+        <span className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#EDEADE]/5 border border-white/10 text-[#EDEADE]/40 text-xs font-black uppercase tracking-wider cursor-not-allowed">
+          Next
+          <ChevronRight className="w-4 h-4" />
+        </span>
+      )}
+    </nav>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // MAIN PAGE
 // ---------------------------------------------------------------------------
-export default function BlogListing() {
-  const postsForGrid = restPosts;
-  const totalPages = Math.ceil(postsForGrid.length / POSTS_PER_PAGE);
-  const currentPosts = postsForGrid.slice(0, POSTS_PER_PAGE);
+export default async function BlogListing({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const rawPage = Number(params.page || '1');
+  const currentPage = Number.isFinite(rawPage)
+    ? Math.min(Math.max(1, rawPage), TOTAL_PAGES)
+    : 1;
 
-  const tagCounts: Record<string, number> = {};
-  blogPosts.forEach((post) => {
-    (post.keywords || []).forEach((kw: string) => {
-      const clean = kw.toLowerCase().trim();
-      if (clean.length > 2 && clean.length < 40) {
-        tagCounts[clean] = (tagCounts[clean] || 0) + 1;
-      }
-    });
-  });
-  const popularTags = Object.entries(tagCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 16)
-    .map(([tag]) => tag);
+  const pagePosts = getPagePosts(currentPage);
+  const isFirstPage = currentPage === 1;
+
+  const featuredPost = isFirstPage ? pagePosts[0] : null;
+  const gridPosts = isFirstPage ? pagePosts.slice(1) : pagePosts;
 
   return (
     <>
-      <BlogSchema />
+      <BlogSchema page={currentPage} posts={pagePosts} />
 
       <div className="flex flex-col min-h-screen bg-[#341766] text-[#EDEADE]">
-
         {/* HERO */}
         <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#6934B8]/20 blur-[150px] rounded-full pointer-events-none" />
@@ -461,118 +561,83 @@ export default function BlogListing() {
               <span className="text-[#FFD532]">BLOG & GUIDES</span>
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-[#EDEADE]/70 font-bold max-w-2xl mx-auto leading-relaxed mb-8">
-              Setup guides, app reviews, streaming tips, and the latest news. Everything you need to get the most out of your {FOCUS_KEYWORD} subscription.
+            <p className="text-base sm:text-lg md:text-xl text-[#EDEADE]/70 font-bold max-w-2xl mx-auto leading-relaxed mb-4">
+              Setup guides, app reviews, streaming tips, and provider comparisons. Everything you need to get the most out of your {FOCUS_KEYWORD} subscription.
             </p>
 
+            {currentPage > 1 && (
+              <p className="text-sm font-black uppercase tracking-widest text-[#FFD532] mb-6">
+                Page {currentPage} of {TOTAL_PAGES}
+              </p>
+            )}
+
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/5 border border-white/10 text-[#EDEADE] text-xs font-black uppercase tracking-wider">
-                <TrendingUp className="w-3.5 h-3.5 text-[#FFD532]" />
-                {blogPosts.length} Articles
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFD532] text-[#341766] text-xs font-black uppercase tracking-wider shadow-md">
+                <TrendingUp className="w-3.5 h-3.5" />
+                All {blogPosts.length} Guides
               </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/5 border border-white/10 text-[#EDEADE] text-xs font-black uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-[#FFD532]" />
-                Updated Weekly
-              </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/5 border border-white/10 text-[#EDEADE] text-xs font-black uppercase tracking-wider">
-                <MessageCircle className="w-3.5 h-3.5 text-[#FFD532]" />
-                24/7 Support
-              </span>
+              <Link
+                href="/setup"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+              >
+                Device Setup Guide
+              </Link>
+              <Link
+                href="/channels"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+              >
+                <Tv className="w-3.5 h-3.5 text-[#FFD532]" />
+                Channel List
+              </Link>
+              <Link
+                href="/reviews"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+              >
+                <Star className="w-3.5 h-3.5 text-[#FFD532]" />
+                Customer Reviews
+              </Link>
+              <Link
+                href="/faq"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#EDEADE]/10 hover:bg-[#6934B8] border border-white/15 text-[#EDEADE] text-xs font-black uppercase tracking-wider transition-colors"
+              >
+                <HelpCircle className="w-3.5 h-3.5 text-[#FFD532]" />
+                IPTV FAQ
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* CATEGORY FILTER CHIPS */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-10">
-          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                className={`cursor-pointer px-4 sm:px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all border-2 ${
-                  cat.id === 'all'
-                    ? 'bg-[#FFD532] text-[#341766] border-[#FFD532] shadow-lg shadow-[#FFD532]/30'
-                    : 'bg-[#EDEADE]/5 text-[#EDEADE]/70 border-white/10 hover:bg-[#6934B8]/20 hover:text-[#EDEADE] hover:border-[#6934B8]/60'
-                }`}
-                aria-label={`Filter by ${cat.label}`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* FEATURED POST */}
+        {/* FEATURED POST — only page 1 */}
         {featuredPost && (
           <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-16">
             <div className="mb-6 flex items-center gap-3">
               <div className="h-1 w-12 bg-[#FFD532] rounded-full" />
-              <h2 className="text-sm font-black uppercase tracking-widest text-[#FFD532]">
+              <span className="text-sm font-black uppercase tracking-widest text-[#FFD532]">
                 Featured Article
-              </h2>
+              </span>
             </div>
             <FeaturedCard post={featuredPost} />
           </section>
         )}
 
-        {/* ARTICLES GRID */}
-        <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-16">
+        {/* GRID */}
+        <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full mb-10">
           <div className="mb-6 flex items-center gap-3">
             <div className="h-1 w-12 bg-[#FFD532] rounded-full" />
-            <h2 className="text-sm font-black uppercase tracking-widest text-[#FFD532]">
-              Latest Articles
-            </h2>
+            <span className="text-sm font-black uppercase tracking-widest text-[#FFD532]">
+              {isFirstPage ? 'All Guides & Comparisons' : `Page ${currentPage} Articles`}
+            </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {currentPosts.map((post, i) => (
-              <BlogCard key={post.id} post={post} priority={i < 3} />
+            {gridPosts.map((post, i) => (
+              <BlogCard key={post.slug} post={post} priority={i < 3} />
             ))}
           </div>
-
-          {totalPages > 1 && (
-            <div className="mt-12 flex items-center justify-center gap-2 sm:gap-3">
-              <button
-                type="button"
-                disabled
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#EDEADE]/5 text-[#EDEADE]/40 border border-white/10 text-xs font-black uppercase tracking-widest cursor-not-allowed"
-                aria-label="Previous page"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Prev
-              </button>
-
-              {Array.from({ length: totalPages }).map((_, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  className={`cursor-pointer w-10 h-10 rounded-full text-xs font-black transition-all ${
-                    idx === 0
-                      ? 'bg-[#FFD532] text-[#341766] shadow-lg shadow-[#FFD532]/30'
-                      : 'bg-[#EDEADE]/5 text-[#EDEADE]/70 border border-white/10 hover:bg-[#6934B8]/20 hover:text-[#EDEADE] hover:border-[#6934B8]/60'
-                  }`}
-                  aria-label={`Go to page ${idx + 1}`}
-                >
-                  {idx + 1}
-                </button>
-              ))}
-
-              <button
-                type="button"
-                disabled={totalPages <= 1}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
-                  totalPages > 1
-                    ? 'bg-[#6934B8]/20 text-[#FFD532] border border-[#FFD532]/40 hover:bg-[#FFD532] hover:text-[#341766] cursor-pointer'
-                    : 'bg-[#EDEADE]/5 text-[#EDEADE]/40 border border-white/10 cursor-not-allowed'
-                }`}
-                aria-label="Next page"
-              >
-                Next
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
         </section>
+
+        {/* PAGINATION */}
+        <Pagination currentPage={currentPage} />
 
         {/* WHATSAPP CTA STRIP */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full mb-16">
@@ -631,7 +696,6 @@ export default function BlogListing() {
             </div>
           </div>
         </section>
-
       </div>
     </>
   );

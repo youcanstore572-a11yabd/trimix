@@ -14,14 +14,17 @@ const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
 const PAGE_URL = `${SITE_URL}/privacy`;
 
-// ---------------------------------------------------------------------------
-// METADATA
-// ---------------------------------------------------------------------------
-export const metadata = generateSEOMetadata(
-  'Privacy Policy & Data Protection',
-  `Read how ${BRAND} safeguards your privacy and personal data in compliance with the CCPA and applicable US privacy law. 100% confidential.`,
-  '/privacy'
-);
+export const metadata = {
+  ...generateSEOMetadata(
+    'Privacy Policy',
+    `Learn how ${BRAND} collects, uses, and protects your personal data and privacy.`,
+    '/privacy'
+  ),
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 // ---------------------------------------------------------------------------
 // JSON-LD

@@ -16,13 +16,11 @@ import {
   MessageCircle,
   Tv,
   Film,
-  Globe,
   Sparkles,
   ChevronDown,
   KeyRound,
   Smartphone,
   CreditCard,
-  Settings,
   Star,
   Users,
 } from 'lucide-react';
@@ -55,11 +53,7 @@ const GlobalServerMap = dynamic(() => import('../components/GlobalServerMap'), {
 });
 
 const BRAND = CONSTANTS.BRAND_NAME;
-const FOCUS_KEYWORD = CONSTANTS.FOCUS_KEYWORD;
 
-// ---------------------------------------------------------------------------
-// FAQ ACCORDION ITEM
-// ---------------------------------------------------------------------------
 function TrimixIptvFAQItem({ q, a }: { q: string; a: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -116,7 +110,6 @@ export default function HowToUsePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#341766] overflow-hidden">
-
       {/* HERO */}
       <section className="relative px-15 py-24 md:py-40 overflow-hidden flex flex-col items-center justify-center text-center min-h-screen w-full bg-gradient-to-b from-white via-[#F5F3F9] to-white">
         <div className="absolute inset-0 z-0">
@@ -137,17 +130,17 @@ export default function HowToUsePage() {
           <div className="inline-flex items-center gap-2 bg-white border border-[#6934B8]/20 px-5 py-2 rounded-full mb-6 shadow-sm">
             <Medal className="w-4 h-4 text-[#FFC300]" />
             <span className="text-[#341766] font-extrabold text-xs uppercase tracking-widest flex items-center gap-2">
-              Trusted {BRAND} Provider
+              Trusted {BRAND} Digital Service
             </span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase text-[#341766] mb-6 leading-none break-words">
             {BRAND.toUpperCase()} <br />
-            <span className="text-[#6934B8]">PREMIUM IPTV PROVIDER</span>
+            <span className="text-[#6934B8]">DIGITAL IPTV SERVICE</span>
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl text-[#341766]/80 max-w-3xl mx-auto mb-10 font-medium leading-relaxed px-2">
-            Stream 20,000+ live channels plus a huge library of movies and TV shows in crisp 4K on any device with {BRAND}. Our team sends your login details on WhatsApp, walks you through setup step by step, and gives you a free trial to test on your own TV first. USD pricing with no lock-in contract.
+            Stream 36,000+ live channels plus 120,000+ movies and TV shows in crisp 4K on any device with {BRAND}. Our team sends your digital login details on WhatsApp within minutes, walks you through setup step by step, and gives you a free trial to test on your own screen first. USD pricing with no lock-in contract.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full max-w-md sm:max-w-xl mx-auto px-4">
@@ -167,7 +160,7 @@ export default function HowToUsePage() {
 
           <div className="mt-12 flex flex-wrap justify-center gap-6 text-xs md:text-sm text-[#341766] font-bold uppercase tracking-widest bg-white px-8 py-4 rounded-3xl border border-[#6934B8]/15 shadow-lg">
             <span className="flex items-center gap-2">
-              <KeyRound className="w-5 h-5 text-[#6934B8]" /> Instant Login Delivery
+              <KeyRound className="w-5 h-5 text-[#6934B8]" /> Instant Digital Delivery
             </span>
             <span className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-[#6934B8]" /> Xtream Codes API Compatible
@@ -179,7 +172,7 @@ export default function HowToUsePage() {
         </FadeIn>
       </section>
 
-            {/* PARTNER SLIDER */}
+      {/* PARTNER SLIDER */}
       <div className="min-h-[128px] bg-[#341766]">
         {isMounted ? <PartnerSlider /> : <div className="h-32 bg-transparent" />}
       </div>
@@ -194,7 +187,7 @@ export default function HowToUsePage() {
               <div className="inline-flex items-center gap-2 bg-white border border-[#6934B8]/20 px-4 py-2 rounded-full mb-6 shadow-sm">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#6934B8] animate-pulse" />
                 <span className="text-[#6934B8] font-black text-xs uppercase tracking-widest">
-                  {BRAND} Setup
+                  {BRAND} Digital Activation
                 </span>
               </div>
 
@@ -207,13 +200,16 @@ export default function HowToUsePage() {
               </h2>
 
               <p className="text-[#341766]/75 text-base sm:text-lg mt-6 font-semibold max-w-2xl leading-relaxed">
-                No worries, we keep it simple. Pick your plan, message us on WhatsApp for your {BRAND} login, and our team walks you through the setup on any device.
+                No hardware shipping or waiting. Pick your plan, receive your digital {BRAND} login on WhatsApp, and follow our{' '}
+                <Link href="/setup" className="text-[#6934B8] underline underline-offset-4 hover:text-[#341766]">
+                  10-minute setup guide
+                </Link>{' '}
+                on any device.
               </p>
             </div>
           </FadeIn>
 
           <FadeInStagger className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 relative">
-            {/* Step 1 */}
             <FadeInItem className="group relative z-10 flex flex-col justify-between bg-white text-[#341766] rounded-3xl p-8 sm:p-10 border border-[#6934B8]/15 shadow-md hover:border-[#6934B8] hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
               <div>
                 <div className="flex items-center justify-between mb-8 relative">
@@ -254,7 +250,6 @@ export default function HowToUsePage() {
               </div>
             </FadeInItem>
 
-            {/* Step 2 */}
             <FadeInItem className="group relative z-10 flex flex-col justify-between bg-white text-[#341766] rounded-3xl p-8 sm:p-10 border border-[#6934B8]/15 shadow-md hover:border-[#6934B8] hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
               <div>
                 <div className="flex items-center justify-between mb-8 relative">
@@ -271,7 +266,7 @@ export default function HowToUsePage() {
                 </div>
 
                 <h3 className="text-2xl font-black text-[#341766] mb-3 uppercase tracking-tight group-hover:text-[#6934B8] transition-colors">
-                  Get Your Login
+                  Get Digital Login
                 </h3>
 
                 <p className="text-[#341766]/75 text-sm font-medium leading-relaxed mb-6">
@@ -295,7 +290,6 @@ export default function HowToUsePage() {
               </div>
             </FadeInItem>
 
-            {/* Step 3 */}
             <FadeInItem className="group relative z-10 flex flex-col justify-between bg-white text-[#341766] rounded-3xl p-8 sm:p-10 border border-[#6934B8]/15 shadow-md hover:border-[#6934B8] hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
               <div>
                 <div className="flex items-center justify-between mb-8 relative">
@@ -339,15 +333,10 @@ export default function HowToUsePage() {
         </div>
       </section>
 
-
-
-
-            {/* PRICING SECTION */}
+      {/* PRICING SECTION */}
       <div className="min-h-[600px] bg-[#341766]" id="pricing-section">
         {isMounted ? <PricingSection /> : <div className="h-[600px] bg-transparent" />}
       </div>
-
-
 
       {/* LIVING ROOM */}
       <section className="w-full bg-white py-20 md:py-28 flex flex-col items-center justify-center overflow-hidden">
@@ -405,7 +394,7 @@ export default function HowToUsePage() {
               ONE LOGIN, <span className="text-[#6934B8]">EVERYTHING INCLUDED</span>
             </h2>
             <p className="text-[#341766]/75 font-semibold text-base md:text-lg leading-relaxed">
-              Your {BRAND} login is a single account that opens up the full streaming service on any device. Here is what it unlocks.
+              Your {BRAND} login is a single digital account that opens up the full streaming service on any device. Here is what it unlocks.
             </p>
           </FadeIn>
 
@@ -413,7 +402,7 @@ export default function HowToUsePage() {
             {[
               {
                 icon: Tv,
-                title: '20,000+ Live Channels',
+                title: '36,000+ Live Channels',
                 desc: 'All major networks plus international channels from around the world.',
               },
               {
@@ -452,7 +441,6 @@ export default function HowToUsePage() {
             })}
           </FadeInStagger>
 
-          {/* Small trust row */}
           <FadeIn className="mt-14 max-w-4xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
@@ -477,7 +465,7 @@ export default function HowToUsePage() {
                 );
               })}
             </div>
-          </FadeIn>
+          </FadeInStagger>
 
           <FadeIn className="text-center mt-14">
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
@@ -500,7 +488,6 @@ export default function HowToUsePage() {
         </div>
       </section>
 
-
       {/* MOVIE SLIDER */}
       <section id="channels" className="pt-24 bg-[#F5F3F9] max-w-[100vw] overflow-hidden relative min-h-[400px] border-t border-[#6934B8]/10">
         <FadeIn className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col justify-between items-start mb-12 gap-6 relative z-10 w-full">
@@ -509,7 +496,7 @@ export default function HowToUsePage() {
               CHANNELS &amp; MOVIES ON <span className="text-[#6934B8]">{BRAND.toUpperCase()}</span>
             </h2>
             <p className="text-[#341766]/70 font-medium text-lg">
-              Your {BRAND} subscription unlocks thousands of live television channels plus 120,000+ movies and TV shows in the on demand library.
+              Your {BRAND} subscription unlocks 36,000+ live television channels plus 120,000+ movies and TV shows in the on demand library.
             </p>
           </div>
         </FadeIn>
@@ -553,7 +540,7 @@ export default function HowToUsePage() {
             {[
               {
                 q: `What is ${BRAND}?`,
-                a: `${BRAND} is a premium IPTV service that delivers live television channels, movies, and TV shows over your internet connection. Our service offers 20,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD, with guided WhatsApp setup and USD pricing.`,
+                a: `${BRAND} is a digital IPTV service that delivers live television channels, movies, and TV shows over your internet connection. Our service offers 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD, with guided WhatsApp setup and USD pricing.`,
               },
               {
                 q: `How do I get my ${BRAND} login details?`,
@@ -569,7 +556,7 @@ export default function HowToUsePage() {
               },
               {
                 q: `What is the difference between ${BRAND} and other IPTV providers?`,
-                a: `${BRAND} runs on high-quality infrastructure with 20,000+ channels, 120,000+ movies, 99.9% uptime, optimized edge servers, and 24/7 WhatsApp support. You get a premium service with no lock-in contracts.`,
+                a: `${BRAND} runs on high-quality infrastructure with 36,000+ channels, 120,000+ movies, 99.9% uptime, optimized edge servers, and 24/7 WhatsApp support. You get a premium digital service with no lock-in contracts.`,
               },
               {
                 q: `Is there a free trial for ${BRAND}?`,
@@ -609,12 +596,12 @@ export default function HowToUsePage() {
               </h2>
 
               <p className="mx-auto mt-4 max-w-3xl text-sm sm:text-base md:text-lg font-medium leading-relaxed text-white/85">
-                Pick your plan, message us on WhatsApp, and we will send your {BRAND} login with step by step help to get you streaming. Test everything on the free trial first, then upgrade only when you are happy.
+                Pick your plan, message us on WhatsApp, and we will send your digital {BRAND} login with step by step help to get you streaming. Test everything on the free trial first, then upgrade only when you are happy.
               </p>
 
               <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 {[
-                  ['20K+', 'Live Channels'],
+                  ['36K+', 'Live Channels'],
                   ['120K+', 'Movies & TV'],
                   ['99.9%', 'Server Uptime'],
                   ['24/7', 'WhatsApp Support'],
@@ -641,14 +628,35 @@ export default function HowToUsePage() {
                 </Link>
               </div>
 
-              <p className="mt-8 text-[11px] sm:text-xs font-black text-white/70 uppercase tracking-wider">
-                Instant Login Delivery • WhatsApp Guided Setup • No Lock-In Contract
+              <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap justify-center gap-4 text-xs font-black uppercase tracking-wider text-white/85">
+                <Link href="/setup" className="hover:text-[#FFC300] transition-colors">
+                  Device Setup Guide
+                </Link>
+                <span>•</span>
+                <Link href="/channels" className="hover:text-[#FFC300] transition-colors">
+                  Full Channel List
+                </Link>
+                <span>•</span>
+                <Link href="/reviews" className="hover:text-[#FFC300] transition-colors">
+                  Verified Reviews
+                </Link>
+                <span>•</span>
+                <Link href="/faq" className="hover:text-[#FFC300] transition-colors">
+                  Service FAQ
+                </Link>
+                <span>•</span>
+                <Link href="/blog" className="hover:text-[#FFC300] transition-colors">
+                  Streaming Guides
+                </Link>
+              </div>
+
+              <p className="mt-6 text-[11px] sm:text-xs font-black text-white/70 uppercase tracking-wider">
+                Instant Digital Login Delivery • WhatsApp Guided Setup • No Lock-In Contract
               </p>
             </FadeIn>
           </div>
         </div>
       </section>
-
     </div>
   );
 }

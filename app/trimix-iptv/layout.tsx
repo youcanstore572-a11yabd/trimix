@@ -13,12 +13,10 @@ const clampTitle = (s: string, max = 60): string =>
 const clampDescription = (s: string, max = 158): string =>
   s.length <= max ? s : s.slice(0, max - 3).trimEnd() + '...';
 
-const PAGE_TITLE = clampTitle(
-  `${BRAND} | 36,000+ Channels in 4K UHD`
-);
+const PAGE_TITLE = clampTitle(`${BRAND} | 36,000+ Channels in 4K UHD`);
 
 const PAGE_DESCRIPTION = clampDescription(
-  `Get ${BRAND}. Stream 36,000+ channels and 120,000+ movies in 4K UHD. Free trial first, WhatsApp setup, USD pricing with no lock-in.`
+  `Get ${BRAND}. Stream 36,000+ channels and 120,000+ movies in 4K UHD. Free trial first, instant WhatsApp setup, USD pricing with no contract.`
 );
 
 export const metadata: Metadata = {
@@ -89,7 +87,7 @@ export const metadata: Metadata = {
 };
 
 const TrimixIptvPageSchema = () => {
-  const currentDate = new Date().toISOString().split('T')[0];
+  const validFromDate = '2026-01-01';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -102,7 +100,7 @@ const TrimixIptvPageSchema = () => {
         url: SITE_URL,
         logo: `${SITE_URL}/img/iptv-logo.webp`,
         image: `${SITE_URL}/img/structer.webp`,
-        description: `${BRAND} is a trusted IPTV provider with 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD.`,
+        description: `${BRAND} is a digital IPTV streaming service with 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD.`,
         contactPoint: {
           '@type': 'ContactPoint',
           telephone: CONSTANTS.CONTACT.phone,
@@ -122,7 +120,7 @@ const TrimixIptvPageSchema = () => {
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
         name: BRAND,
-        alternateName: `${BRAND} - Premium IPTV Provider`,
+        alternateName: `${BRAND} - Digital IPTV Streaming Service`,
         publisher: { '@id': `${SITE_URL}/#organization` },
         inLanguage: 'en-US',
       },
@@ -150,8 +148,8 @@ const TrimixIptvPageSchema = () => {
         '@id': `${PAGE_URL}/#product`,
         name: `${BRAND} Subscription`,
         sku: 'TRIMIX-IPTV',
-        category: 'Streaming Service',
-        description: `${BRAND} is a premium IPTV service. Stream 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD. Guided WhatsApp setup, free trial available, USD pricing with no lock-in contract.`,
+        category: 'Digital Streaming Service',
+        description: `${BRAND} is a digital IPTV service. Stream 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD. Instant digital login delivery, guided WhatsApp setup, free trial available, USD pricing with no lock-in contract.`,
         image: `${SITE_URL}/img/structer.webp`,
         brand: { '@type': 'Brand', name: BRAND },
         aggregateRating: {
@@ -168,10 +166,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '29.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 3 month plan on 1 device with 36,000+ live channels.`,
+            description: `${BRAND} 3 month digital subscription on 1 device with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -179,10 +177,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '39.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 6 month plan on 1 device with 36,000+ live channels.`,
+            description: `${BRAND} 6 month digital subscription on 1 device with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -190,10 +188,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '69.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 12 month plan on 1 device with 36,000+ live channels.`,
+            description: `${BRAND} 12 month digital subscription on 1 device with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -201,10 +199,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '49.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 3 month plan on 2 devices with 36,000+ live channels.`,
+            description: `${BRAND} 3 month digital subscription on 2 devices with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -212,10 +210,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '59.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 6 month plan on 2 devices with 36,000+ live channels.`,
+            description: `${BRAND} 6 month digital subscription on 2 devices with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -223,10 +221,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '89.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 12 month plan on 2 devices with 36,000+ live channels.`,
+            description: `${BRAND} 12 month digital subscription on 2 devices with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -234,10 +232,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '69.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 3 month plan on 3 devices with 36,000+ live channels.`,
+            description: `${BRAND} 3 month digital subscription on 3 devices with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -245,10 +243,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '89.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 6 month plan on 3 devices with 36,000+ live channels.`,
+            description: `${BRAND} 6 month digital subscription on 3 devices with 36,000+ live channels.`,
           },
           {
             '@type': 'Offer',
@@ -256,10 +254,10 @@ const TrimixIptvPageSchema = () => {
             priceCurrency: 'USD',
             price: '139.00',
             priceValidUntil: '2027-12-31',
-            validFrom: currentDate,
+            validFrom: validFromDate,
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/pricing`,
-            description: `${BRAND} 12 month plan on 3 devices with 36,000+ live channels.`,
+            description: `${BRAND} 12 month digital subscription on 3 devices with 36,000+ live channels.`,
           },
         ],
       },
@@ -272,7 +270,7 @@ const TrimixIptvPageSchema = () => {
             name: `What is ${BRAND}?`,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: `${BRAND} is a premium streaming service that delivers live television channels, movies, and TV shows over your internet connection. Our service offers 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD, with guided WhatsApp setup and USD pricing.`,
+              text: `${BRAND} is a digital IPTV streaming service that delivers live television channels, movies, and TV shows over your internet connection. Our service offers 36,000+ live channels and 120,000+ movies and TV shows in 4K Ultra HD, with guided WhatsApp setup and USD pricing.`,
             },
           },
           {
@@ -312,7 +310,7 @@ const TrimixIptvPageSchema = () => {
             name: `How fast is ${BRAND} setup?`,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Most customers are streaming within 10 minutes. You choose your plan, message us on WhatsApp, and our team walks you through the install step by step until everything is working.',
+              text: 'Most customers are streaming within 10 minutes. You choose your plan, message us on WhatsApp, and our team sends your digital credentials and walks you through the install step by step.',
             },
           },
         ],

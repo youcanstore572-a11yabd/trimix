@@ -18,14 +18,17 @@ const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
 const PAGE_URL = `${SITE_URL}/terms`;
 
-// ---------------------------------------------------------------------------
-// METADATA
-// ---------------------------------------------------------------------------
-export const metadata = generateSEOMetadata(
-  'Terms & Conditions',
-  `Read the ${BRAND} Terms of Service. Clear agreements about subscriptions, our quality guarantee, acceptable use, and legal jurisdiction.`,
-  '/terms'
-);
+export const metadata = {
+  ...generateSEOMetadata(
+    'Terms & Conditions',
+    `Read the ${BRAND} Terms of Service. Clear agreements about subscriptions, our quality guarantee, acceptable use, and legal jurisdiction.`,
+    '/terms'
+  ),
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 // ---------------------------------------------------------------------------
 // JSON-LD

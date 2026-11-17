@@ -27,9 +27,6 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-// ---------------------------------------------------------------------------
-// FAQ Item — Accordion
-// ---------------------------------------------------------------------------
 function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,15 +74,11 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// MAIN PRICING PAGE
-// ---------------------------------------------------------------------------
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
-
       {/* ==========================================================
-          HERO SECTION — Fully Centered
+          HERO SECTION
       ========================================================== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-[#F5F3F9] to-white">
         <div className="absolute inset-0 z-0">
@@ -164,7 +157,7 @@ export default function PricingPage() {
       </div>
 
       {/* ==========================================================
-          FEATURES GRID — LIGHT
+          FEATURES GRID
       ========================================================== */}
       <section className="py-24 bg-[#F5F3F9] w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -181,7 +174,7 @@ export default function PricingPage() {
             {[
               {
                 icon: Tv,
-                title: '20,000+ Live Channels',
+                title: '36,000+ Live Channels',
                 desc: `Sports, news, entertainment, and premium broadcasters from around the world on this IPTV Provider.`,
               },
               {
@@ -243,7 +236,7 @@ export default function PricingPage() {
       </section>
 
       {/* ==========================================================
-          COMPARISON TABLE — Light
+          COMPARISON TABLE
       ========================================================== */}
       <section className="py-24 bg-white border-y border-[#6934B8]/10 w-full">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -276,7 +269,7 @@ export default function PricingPage() {
               </thead>
               <tbody className="divide-y divide-[#6934B8]/5">
                 {[
-                  { feature: 'Live Channels', basic: '20,000+', pro: '20,000+ VIP', premium: '20,000+' },
+                  { feature: 'Live Channels', basic: '36,000+', pro: '36,000+ VIP', premium: '36,000+' },
                   { feature: 'Movies & TV Shows', basic: '120,000+', pro: '120,000+ (Daily Updates)', premium: '120,000+' },
                   { feature: '4K & 60FPS Streaming', basic: 'Yes', pro: 'Yes (Ultra Bitrate)', premium: 'Yes' },
                   { feature: 'Live Sport & PPV', basic: 'Included', pro: 'All PPV + VIP Feeds', premium: 'Included' },
@@ -300,7 +293,7 @@ export default function PricingPage() {
       </section>
 
       {/* ==========================================================
-          TRUST BADGES — Light gray section
+          TRUST BADGES
       ========================================================== */}
       <section className="py-24 bg-[#F5F3F9] w-full relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#6934B8]/10 blur-[120px] rounded-full pointer-events-none" />
@@ -369,7 +362,7 @@ export default function PricingPage() {
       </section>
 
       {/* ==========================================================
-          FREE TRIAL BANNER — White card with gold border
+          FREE TRIAL BANNER
       ========================================================== */}
       <section className="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-white w-full">
         <div className="bg-white border-2 border-[#FFC300] rounded-3xl p-8 md:p-10 text-center shadow-lg">
@@ -389,7 +382,7 @@ export default function PricingPage() {
       </section>
 
       {/* ==========================================================
-          FAQ — LIGHT
+          FAQ
       ========================================================== */}
       <section className="w-full bg-[#F5F3F9] py-24 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-96 bg-[#6934B8]/10 blur-[120px] rounded-full pointer-events-none" />
@@ -449,7 +442,7 @@ export default function PricingPage() {
       </div>
 
       {/* ==========================================================
-          BOTTOM CTA — Dark Purple
+          BOTTOM CTA — Fixed /setup link + crawl links to stuck routes
       ========================================================== */}
       <section className="py-20 bg-[#341766] border-t border-[#FFC300]/20 w-full relative overflow-hidden">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#6934B8]/20 blur-[140px] rounded-full pointer-events-none" />
@@ -471,13 +464,32 @@ export default function PricingPage() {
                 Choose Your Plan
               </Link>
               <Link
-                href="/firestick-setup"
+                href="/setup"
                 className="cursor-pointer w-full sm:w-auto text-center whitespace-nowrap px-8 py-4 rounded-full bg-white text-[#6934B8] font-black uppercase tracking-widest text-sm transition-all hover:scale-105 hover:bg-[#6934B8] hover:text-white border-2 border-white"
               >
                 Setup Guide
               </Link>
             </div>
-            <div className="flex flex-wrap justify-center gap-6 mt-8 text-white/70 text-xs font-black uppercase tracking-widest">
+
+            <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap justify-center gap-4 text-xs font-black uppercase tracking-wider text-white/85">
+              <Link href="/channels" className="hover:text-[#FFC300] transition-colors">
+                Browse 36,000+ Channels
+              </Link>
+              <span>•</span>
+              <Link href="/reviews" className="hover:text-[#FFC300] transition-colors">
+                Customer Reviews
+              </Link>
+              <span>•</span>
+              <Link href="/faq" className="hover:text-[#FFC300] transition-colors">
+                Full FAQ
+              </Link>
+              <span>•</span>
+              <Link href="/blog" className="hover:text-[#FFC300] transition-colors">
+                IPTV Guides
+              </Link>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-6 mt-6 text-white/70 text-xs font-black uppercase tracking-widest">
               <span className="flex items-center gap-2">
                 <Zap className="w-3.5 h-3.5 text-[#FFC300]" /> Instant Activation
               </span>

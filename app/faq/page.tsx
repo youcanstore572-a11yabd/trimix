@@ -18,17 +18,13 @@ import {
   AlertCircle,
   Sparkles,
   MessageCircle,
+  ArrowRight,
 } from 'lucide-react';
 import ShareButtons from '../components/ShareButtons';
 
-const SITE_URL = CONSTANTS.SITE_URL;
 const BRAND = CONSTANTS.BRAND_NAME;
 const FOCUS_KEYWORD = CONSTANTS.FOCUS_KEYWORD;
-const PAGE_URL = `${SITE_URL}/faq`;
 
-// ---------------------------------------------------------------------------
-// TYPES + FAQ DATA
-// ---------------------------------------------------------------------------
 interface FAQItem {
   id: string;
   category: 'general' | 'sports' | 'devices' | 'billing';
@@ -70,9 +66,6 @@ const faqList: FAQItem[] = [
   { id: 'pay-6', category: 'billing', q: 'Are there hidden fees or admin charges?', a: 'No. The prices shown on our pricing page are fully all in. You pay once for your chosen period with no unexpected surcharges or connection fees.' },
 ];
 
-// ---------------------------------------------------------------------------
-// MAIN PAGE
-// ---------------------------------------------------------------------------
 export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | 'general' | 'sports' | 'devices' | 'billing'>('all');
@@ -94,60 +87,8 @@ export default function FAQPage() {
     setOpenAccordion((prev) => (prev === id ? null : id));
   };
 
-  // ------------------- JSON-LD SCHEMAS (inline) -------------------
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'FAQPage',
-        '@id': `${PAGE_URL}/#faq`,
-        mainEntity: faqList.map((f) => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: f.a,
-          },
-        })),
-      },
-      {
-        '@type': 'BreadcrumbList',
-        '@id': `${PAGE_URL}/#breadcrumb`,
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
-          { '@type': 'ListItem', position: 2, name: 'FAQ', item: PAGE_URL },
-        ],
-      },
-      {
-        '@type': 'WebPage',
-        '@id': `${PAGE_URL}/#webpage`,
-        url: PAGE_URL,
-        name: `${BRAND} FAQ | Help Center`,
-        isPartOf: { '@id': `${SITE_URL}/#website` },
-        about: { '@id': `${SITE_URL}/#organization` },
-        inLanguage: 'en-US',
-        primaryImageOfPage: {
-          '@type': 'ImageObject',
-          url: `${SITE_URL}/img/structer.webp`,
-          width: '1200',
-          height: '630',
-        },
-        breadcrumb: { '@id': `${PAGE_URL}/#breadcrumb` },
-      },
-    ],
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-white text-[#341766] overflow-hidden">
-
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        id="faq-page-schema"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
       {/* ==========================================================
           HERO
       ========================================================== */}
@@ -201,7 +142,6 @@ export default function FAQPage() {
           FAQ ACCORDION
       ========================================================== */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-
         {/* Category tabs */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12">
           {[
@@ -386,6 +326,15 @@ export default function FAQPage() {
               );
             })}
           </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/setup"
+              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#6934B8] hover:text-[#341766] underline underline-offset-4"
+            >
+              Read Step-by-Step Device Installation Guide <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -460,6 +409,24 @@ export default function FAQPage() {
                 className="cursor-pointer w-full sm:w-auto px-8 py-4 rounded-full bg-white text-[#6934B8] font-black text-xs uppercase tracking-widest hover:scale-105 hover:bg-[#6934B8] hover:text-white transition-all shadow-xl border-2 border-white"
               >
                 View All Plans
+              </Link>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap justify-center gap-4 text-xs font-black uppercase tracking-wider text-white/80">
+              <Link href="/channels" className="hover:text-[#FFC300] transition-colors">
+                Channel Lineup
+              </Link>
+              <span>•</span>
+              <Link href="/reviews" className="hover:text-[#FFC300] transition-colors">
+                Customer Reviews
+              </Link>
+              <span>•</span>
+              <Link href="/blog" className="hover:text-[#FFC300] transition-colors">
+                Streaming Guides
+              </Link>
+              <span>•</span>
+              <Link href="/about" className="hover:text-[#FFC300] transition-colors">
+                About {BRAND}
               </Link>
             </div>
           </div>
